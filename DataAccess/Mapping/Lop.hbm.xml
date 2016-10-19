@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="DataAccess"
+                   namespace="DataAccess.Models.DataUnit">
+
+  <class name="Lop">
+    <id name="Id" >
+      <generator class="native" />
+    </id>
+    <property name="Action" />
+    <property name="Status" />
+    <bag name="Materialy" lazy="true" inverse="true"
+                         cascade="all-delete-orphan">
+      <key column="Lop" />
+      <one-to-many class="LopMaterial" />
+    </bag>
+    <property name="StartDate" />
+    <property name="PlannedCloseDate" />
+    <property name="CloseDate" />
+    <property name="FinishDate" />
+    <property name="CheckDate" />
+    <property name="LastChangedDate" />
+    <many-to-one class="DataAccess.Models.DataUnit.Users.Uzivatel" name="Zadavatel" />
+    <many-to-one class="DataAccess.Models.DataUnit.Users.Uzivatel" name="Resitel" />
+    <property name="Nazev" />
+    <property name="Popis" type="StringClob" not-null="false" >
+      <column name="Popis" sql-type="text"/>
+    </property>
+    <property name="Komentar" />
+    <property name="DeniedMessage"/>
+    <property name="Investice" />
+    <property name="LessonLearned" />
+    <property name="Deleted" />
+    <property name="Dilna" />
+
+    <bag name="SubUkoly" lazy="true" inverse="true"
+                         cascade="all-delete-orphan">
+      <key column="Lop" />
+      <one-to-many class="SubUkol" />
+    </bag>
+
+    <bag name="History" lazy="true" inverse="true"
+                         cascade="all-delete-orphan">
+      <key column="Lop" />
+      <one-to-many class="LopHistory" />
+    </bag>
+  </class>
+
+</hibernate-mapping>

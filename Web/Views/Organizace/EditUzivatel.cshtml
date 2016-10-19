@@ -1,0 +1,120 @@
+﻿@model DataAccess.Models.DataUnit.Users.Uzivatel
+@{
+    ViewBag.Title = "Organizace";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<div>
+
+    <h1>@Model.Jmeno @Model.Prijmeni</h1>
+
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading panel-default">
+            <a class="btn btn-default " href="@Url.Action("DetailUzivatel",new {id = Model.Id})">@Web.Resources.LopTexts.Zpet</a>
+
+            <button disabled="disabled" id="btn_show_oddeleni" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModalVedouci">
+                @Web.Resources.LopTexts.PridatDilnuUzivateli &nbsp;<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+
+
+        </div>
+        <div class="panel-body">
+
+            <table class="table table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th>@Web.Resources.LopTexts.Dilna</th>
+                        <th>@Web.Resources.LopTexts.Operace</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model.DilnyUzivatelu)
+                    {
+                        <tr>
+                            <td>@item.Dilna.Nazev</td>
+                            <td>
+                                <a class="btn btn-danger " onclick=" return confirm('Opravdu odebrat dílnu od uživatele?') " href="@Url.Action("RemoveDilnaFromUzivatel", new {uzivatelId = item.Uzivatel.Id, dilnaId = item.Dilna.Id})"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- Modal -->
+
+
+<div class="modal fade" id="myModalVedouci" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">@Web.Resources.LopTexts.VyberVedouciho</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-condensed" id="zaznamyOddeleni">
+                        <thead>
+                            <tr>
+                                <th>@Web.Resources.LopTexts.Dilna</th>
+                                <th>@Web.Resources.LopTexts.Operace</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Web.Resources.LopTexts.Zavrit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Script{
+    <script type="text/javascript" src="@Url.Content("~/scripts/tinymce/tinymce.min.js")"></script>
+    <script type="text/javascript">tinymce.init({ selector: '.formatedtext' });</script>
+    <script type="text/javascript" src="@Url.Content("~/scripts/datatables.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/scripts/bootstrap-datepicker.js")"></script>
+    @if (Web.Resources.HomeTexts.lang == "cs")
+    {
+        <script type="text/javascript" src="@Url.Content("~/scripts/locales/bootstrap-datepicker.cs.min.js")"></script>
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            loadUzivatele();
+        });
+        loadUzivatele = function () {
+            $.getJSON('/api/ApiUzivatel?json=true&uzivatelId=@Model.Id&dalsiFunkce=null').done(function (data) { //dalsiFunkce=null jen kvůli rozdílnosti názvů funkcí v apicontrolleru
+                $.each(data, function (key, val) {
+                    $("#zaznamyOddeleni").find('tbody')
+                        .append($('<tr>')
+                            .append($('<td>')
+                                .text(val['Nazev'])
+                            )
+                            .append($('<td>')
+                                .append($('<button>')
+                                    .attr('class', 'btn btn-default btn-sm')
+                                    .attr('onclick', 'fillDilna(\'' + @Model.Id + '\', \'' + val['DilnaId'] + '\')')
+                                    .text('Přidat')
+                                )
+                            )
+                        );
+                });
+
+            });
+        }
+        fillDilna = function (uzivatelId, dilnaId) {
+            window.location.href = '@Url.Action("AddDilnaToUzivatel")' + '?uzivatelId=' + uzivatelId + '&dilnaId=' + dilnaId;
+        }
+    </script>
+}

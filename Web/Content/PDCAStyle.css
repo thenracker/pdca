@@ -1,0 +1,137 @@
+﻿/* PDCA STYLE OF ELEMENTS */
+
+/* FONTS */
+/*
+    @font-face {
+    font-family: "Open Sans Condensed"; 
+    src:url("/fonts/OpenSans-CondBold.ttf")format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+*/
+
+
+
+/* LAYOUT */
+.container {
+    margin-left: 10%;
+    width: 80%;
+}
+.form-container {
+    margin-left: 10%;
+    width: 80%;
+}
+.footer {
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.label-table{
+    /*stretch it*/
+    float: left;
+    width: 100%;
+}
+
+.form-group > div > span.label-success {
+    font-weight: normal;
+    color: black;
+    background-color: #dff0d8;
+}
+.form-group > div > span.label-warning {
+    font-weight: normal;
+    color: black;
+    background-color: #fcf8e3;
+}
+.form-group > div > span.label-danger {
+    font-weight: normal;
+    color: black;
+    background-color: #f2dede;
+}
+
+
+
+#navbar ul li:hover {
+    background-color: #f0f0f0;
+}
+
+.table > thead > tr > th, .table > tbody > tr > td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.notifikaceVypis > thead > tr > th, .notifikaceVypis > tbody > tr > td {
+    vertical-align: middle;
+    text-align: left;
+}
+
+#history > table > thead > tr > th, #history > table > tbody > tr > td {
+    vertical-align: middle;
+    text-align: left;
+}
+
+table > tbody > tr > td.td-akce {
+    text-align: left;
+}
+
+.table-produkt > tbody > tr > td, .table-produkt > thead > tr > th {
+    text-align: left;
+}
+
+@media only screen and (max-width: 900px) {
+
+    .container {
+        margin-left: 0;
+        width: 100%;
+    }
+
+}
+
+
+/* TODO responsive do určitých rozměrů ! */
+
+/* LINKS */
+a {
+    color: darkcyan;
+}
+a:hover {
+    color: black;
+}
+
+
+
+textarea.formatedtext {
+    height: 300px;
+}
+
+/* HISTORIE */
+div.form-group > div.historyChanged, div.pull-right > div.historyChanged, table > tbody > tr > td > div.form-group > div > div.historyChanged {
+    color: red;
+    font-weight: bold;
+}
+
+div.panel-heading, div.panel-success {
+    padding-top: 5px; padding-bottom: 5px;
+}
+ #history table {
+    margin-bottom: 0;
+}
+div.panel-default > div.panel-body {
+    padding-top: 10px;margin-bottom: 0px;
+}
+div.panel-default > div.panel-body hr {
+    margin-bottom: 0; margin-top: 1px
+}
+div.panel-default > div.panel-body h2 {
+    margin-top: 0;
+}
+div.panel-default > div.panel-body div {
+    margin-bottom: 10px
+}
+/* RADIUS DISABLE IMPORTANT :) */
+/*
+* {
+  -webkit-border-radius: 0 !important;
+     -moz-border-radius: 0 !important;
+          border-radius: 0 !important;
+}
+*/

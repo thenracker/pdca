@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="DataAccess"
+                   namespace="DataAccess.Models.DataUnit">
+
+  <class name="UkolVedeniHistory">
+    <id name="Id" >
+      <generator class="native" />
+    </id>
+    <many-to-one class="UkolVedeni" name="UkolVedeni" />
+    <property name="Action" />
+    <property name="Status" />
+    <!--lazy="true"-->
+    <bag name="Materialy"  inverse="true"
+                         cascade="all-delete-orphan">
+      <key column="UkolVedeniHistory" />
+      <one-to-many class="UkolVedeniHistoryMaterial" />
+    </bag>
+    <many-to-one class="DataAccess.Models.DataUnit.Users.Uzivatel" name="Zadavatel" />
+    <property name="Nazev" />
+    <property name="Popis" type="StringClob" not-null="false" >
+      <column name="Popis" sql-type="text"/>
+    </property>
+    <property name="Komentar" />
+    <property name="DeniedMessage"/>
+    <many-to-one class="DataAccess.Models.DataUnit.Users.Uzivatel" name="Resitel" />
+    <property name="DateStart" />
+    <property name="DatePlannedClose" />
+    <property name="DateDeadline" />
+    <property name="Poznamka" />
+    <property name="DateFinish" />
+    <property name="DateCheck" />
+    <property name="DateLastChanged" />
+    <property name="LessonLearned" />
+    <property name="Dilna" />
+  </class>
+
+</hibernate-mapping>

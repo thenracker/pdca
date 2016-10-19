@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="DataAccess"
+                   namespace="DataAccess.Models.DataUnit">
+
+  <class name="UkolVedeniHistoryMaterial">
+    <id name="Id" >
+      <generator class="native" />
+    </id>
+    <many-to-one class="UkolVedeniHistory" name="UkolVedeniHistory" />
+    <many-to-one class="Material" name="Produkt" />
+    <property name="DateAdded" />
+  </class>
+</hibernate-mapping>

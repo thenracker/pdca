@@ -1,0 +1,115 @@
+﻿@using DataAccess.Models.DataUnit
+@using DataAccess.Models.DataUnit.Users
+@model SubUkol
+@{
+    ViewBag.Title = "EditSubUkol";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<div class="form-container">
+    <h2>@Web.Resources.LopTexts.EditSubUkol</h2>
+    @using (Html.BeginForm("EditSubUkol", "Lop", FormMethod.Post))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.LopId)
+        @Html.HiddenFor(x => x.Action)
+        @Html.HiddenFor(x => x.Zadavatel.SmartId)
+        if (Model.Zadavatel != null)
+        {
+            <div class="form-group">
+                <label class="control-label">@Web.Resources.LopTexts.Zadavatel</label>
+                <div class="">
+                    <p>@Model.Zadavatel.ToString()</p>
+                </div>
+            </div>
+        }
+        <div class="form-group">
+            <label class="control-label">@Web.Resources.LopTexts.Nazev</label>
+            <div class="">
+                @Html.TextBoxFor(x => x.Nazev, new {@class = "form-control", placeholder = "Název"})
+                @Html.ValidationMessageFor(x => x.Nazev, null, new {@class = "text-danger"})
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">@Web.Resources.LopTexts.Resitel</label>
+            <div class="">
+                @Html.DropDownListFor(x => x.Resitel.SmartId, new SelectList(Uzivatel.GetSelectListUzivatele(), "Value", "Text"), new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">@Web.Resources.LopTexts.PlannedCloseDate</label>
+            <div class="">
+                @Html.TextBoxFor(x => x.PlannedCloseDate, new {@class = "form-control jscalendar", Value = ((DateTime) Model.PlannedCloseDate).ToShortDateString()})
+                @Html.ValidationMessageFor(x => x.PlannedCloseDate, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        @*<div class="form-group">
+        <label class="control-label">@Web.Resources.LopTexts.Status</label>
+        <div class="">
+            @Html.DropDownListFor(x => x.Status, (Enum.GetValues(typeof(StatusUkolu)).Cast<StatusUkolu>().Select(x => new SelectListItem() { Text = x.ToString(), Value = ((int)x).ToString() })), new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Status, null, new { @class = "text-danger" })
+            <!--Html.CheckBoxFor(x => x.Status, new { class = "form-control" })-->
+        </div>
+    </div>*@
+        <div class="form-group">
+            <label class="control-label">@Web.Resources.LopTexts.Popis</label>
+            <div class="">
+                @Html.TextAreaFor(x => x.Popis, new { @class = "form-control formatedtext", placeholder = "Popis" })
+                @Html.ValidationMessageFor(x => x.Popis, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-0">
+                <button type="submit" class="btn btn-primary btn-load" id="btn_confirm" data-loading-text="Ukládám...">
+                    @Web.Resources.LopTexts.Potvrdit
+                </button>
+                <a class="btn btn-default" href="@Url.Action("DetailSubUkol", new {id = Model.Id})">Zpět na detail podúkolu</a>
+            </div>
+        </div>
+        <div class="form-group">
+            @if (Model.Resitel.WindowsId == User.Identity.Name.ToUpper())
+            {
+                /*POSÍLÁNÍ EMAILU - PODLE TOHO KDO DO ÚKOLU PŘISTUPUJE*/
+                <div class="">
+                    @Html.CheckBox("poslatMailZadavateli", new { @checked = "" })
+                    <label class="control-label">@Web.Resources.LopTexts.PoslatUpozorneniZadavateli</label>
+                    @Html.Hidden("poslatMailResiteli", false)
+                </div>
+            }
+            else
+            {
+                <div class="">
+                    @Html.CheckBox("poslatMailResiteli", new { @checked = "" })
+                    <label class="control-label">@Web.Resources.LopTexts.PoslatUpozorneniResiteli</label>
+                    @Html.Hidden("poslatMailZadavateli", false)
+                </div>
+            }
+
+        </div>
+    }
+</div>
+@section Header{
+
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/content/bootstrap-datepicker.min.css")" />
+}
+@section Script{
+    <script type="text/javascript" src="@Url.Content("~/scripts/tinymce/tinymce.min.js")"></script>
+    <script type="text/javascript">tinymce.init({ selector: '.formatedtext' });</script>
+    <script type="text/javascript" src="@Url.Content("~/scripts/bootstrap-datepicker.js")"></script>
+    @if (Web.Resources.HomeTexts.lang == "cs")
+    {
+        <script type="text/javascript" src="@Url.Content("~/scripts/locales/bootstrap-datepicker.cs.min.js")"></script>
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.jscalendar').datepicker({
+                todayBtn: "linked",
+                orientation: "bottom auto",
+                language: "@Web.Resources.HomeTexts.lang",
+                calendarWeeks: true,
+                todayHighlight: true,
+                startDate: "0d",
+                autoclose: "true"
+            });
+        });
+    </script>
+}

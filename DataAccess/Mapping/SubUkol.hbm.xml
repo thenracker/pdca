@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="DataAccess"
+                   namespace="DataAccess.Models.DataUnit">
+  <class name="SubUkol">
+    <id name="Id" >
+      <generator class="native" />
+    </id>
+    <many-to-one class="Lop" name="Lop" />
+    <property name="Action" />
+    <property name="Status" />
+    <property name="StartDate" />
+    <property name="PlannedCloseDate" />
+    <property name="CloseDate" />
+    <property name="FinishDate" />
+    <property name="CheckDate" />
+    <property name="LastChangedDate" />
+    <many-to-one class="DataAccess.Models.DataUnit.Users.Uzivatel" name="Zadavatel" />
+    <many-to-one class="DataAccess.Models.DataUnit.Users.Uzivatel" name="Resitel" />
+    <property name="Nazev" />
+    <property name="Popis" type="StringClob" not-null="false" >
+      <column name="Popis" sql-type="text"/>
+    </property>
+    <property name="Komentar" />
+    <property name="DeniedMessage"/>
+    <property name="Deleted" />
+    <bag name="History" lazy="true" inverse="true"
+                         cascade="all-delete-orphan">
+      <key column="SubUkol" />
+      <one-to-many class="SubUkolHistory" />
+    </bag>
+  </class>
+</hibernate-mapping>

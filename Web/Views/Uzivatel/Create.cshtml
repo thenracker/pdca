@@ -1,0 +1,78 @@
+﻿@using DataAccess.Models.DataUnit.Users
+@model Uzivatel
+@{
+    ViewBag.Title = Web.Resources.UzivatelTexts.AddNewUser;
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<div class="form-container">
+    <h1>@Web.Resources.UzivatelTexts.AddNewUser</h1>
+
+    @using (Html.BeginForm("Create", "Uzivatel", FormMethod.Post))
+    {
+        <div class="form-group">
+            <label class="control-label">@Web.Resources.UzivatelTexts.WindowsId</label>
+            <div>
+                @Html.TextBoxFor(x => x.WindowsId, new { @class = "form-control", placeholder = "" })
+                @Html.ValidationMessageFor(x => x.WindowsId, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">@Web.Resources.UzivatelTexts.PersonalNumber</label>
+            <div>
+                @Html.TextBoxFor(x => x.OsCislo, new { @class = "form-control", placeholder = "" })
+                @Html.ValidationMessageFor(x => x.OsCislo, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">@Web.Resources.UzivatelTexts.Name</label>
+            <div>
+                @Html.TextBoxFor(x => x.Jmeno, new { @class = "form-control", placeholder = "" })
+                @Html.ValidationMessageFor(x => x.Jmeno, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">@Web.Resources.UzivatelTexts.LastName</label>
+            <div>
+                @Html.TextBoxFor(x => x.Prijmeni, new { @class = "form-control", placeholder = "" })
+                @Html.ValidationMessageFor(x => x.Prijmeni, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">@Web.Resources.UzivatelTexts.Email</label>
+            <div>
+                @Html.TextBoxFor(x => x.Email, new { @class = "form-control", placeholder = "" })
+                @Html.ValidationMessageFor(x => x.Email, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">@Web.Resources.UzivatelTexts.Department</label>
+            <div>
+                @Html.TextBoxFor(x => x.Oddeleni, new { @class = "form-control", placeholder = "" })
+                @Html.ValidationMessageFor(x => x.Oddeleni, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">@Web.Resources.UzivatelTexts.Division</label>
+            <div>
+                @Html.TextBoxFor(x => x.Oddeleni.Usek, new { @class = "form-control", placeholder = "" })
+                @Html.ValidationMessageFor(x => x.Oddeleni.Usek, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">@Web.Resources.UzivatelTexts.Permissions</label>
+            <div>
+                @Html.DropDownListFor(x => x.Role.Id, Role.GetSelectListRolesWithDefault(), new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div>
+                <button type="submit" class="btn btn-primary btn-load" id="btn_confirm" data-loading-text="Ukládám...">
+                    @Web.Resources.LopTexts.Potvrdit
+                </button>
+
+                <a href="@Url.Action("Index")" class="btn btn-default">@Web.Resources.HomeTexts.Cancel</a>
+            </div>
+        </div>
+
+    }
+</div>

@@ -1,0 +1,44 @@
+﻿@model DataAccess.Models.DataUnit.Users.Uzivatel
+@{
+    ViewBag.Title = "Organizace";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<div>
+
+    <h1>Profil</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-heading panel-success">
+            <a class="btn btn-default " href="@Url.Action("DetailOddeleni",new {id = Model.Oddeleni.Id})">@Web.Resources.LopTexts.Zpet</a>
+            <a class="btn btn-warning " href="@Url.Action("EditUzivatel",new {id = Model.Id})">@Web.Resources.LopTexts.Upravit</a>
+
+        </div>
+        <div class="panel-body">
+
+            <h2>@Model.Jmeno @Model.Prijmeni</h2>
+
+            <p>Email: @Model.Email</p>
+            <p>Oddělení: @Model.Oddeleni.Nazev</p>
+
+            <table class="table table-condensed table-striped">
+                <thead>
+                <tr>
+                    <th>@Web.Resources.LopTexts.Dilna</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.DilnyUzivatelu)
+                {
+                    <tr>
+                        <td>@item.Dilna.Nazev</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+

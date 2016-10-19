@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DAE4A6CB-9E88-4D4C-9888-1CBE1C56135E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DataAccess</RootNamespace>
+    <AssemblyName>DataAccess</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Dao\CustomTableSettingDao.cs" />
+    <Compile Include="Models\Dao\DaoBase.cs" />
+    <Compile Include="Models\Dao\DbErrorDao.cs" />
+    <Compile Include="Models\Dao\LopWorkFlowEventDao.cs" />
+    <Compile Include="Models\Dao\ReportDao.cs" />
+    <Compile Include="Models\Dao\LopDao.cs" />
+    <Compile Include="Models\Dao\LopHistoryDao.cs" />
+    <Compile Include="Models\Dao\LopMaterialDao.cs" />
+    <Compile Include="Models\Dao\MaterialDao.cs" />
+    <Compile Include="Models\Dao\NotifikaceDao.cs" />
+    <Compile Include="Models\Dao\PermissionDao.cs" />
+    <Compile Include="Models\Dao\OddeleniDao.cs" />
+    <Compile Include="Models\Dao\DbbDilnaDao.cs" />
+    <Compile Include="Models\Dao\VedouciOddeleniDao.cs" />
+    <Compile Include="Models\Dao\UsekDao.cs" />
+    <Compile Include="Models\Dao\RoleDao.cs" />
+    <Compile Include="Models\Dao\UkolVzorkovaniMaterialDao.cs" />
+    <Compile Include="Models\Dao\UkolOddeleniMaterialDao.cs" />
+    <Compile Include="Models\Dao\UkolVedeniMaterialDao.cs" />
+    <Compile Include="Models\Dao\UkolVzorkovaniHistoryDao.cs" />
+    <Compile Include="Models\Dao\UkolVzorkovaniDao.cs" />
+    <Compile Include="Models\Dao\UkolOddeleniHistoryDao.cs" />
+    <Compile Include="Models\Dao\UkolOddeleniDao.cs" />
+    <Compile Include="Models\Dao\UkolVedeniHistoryDao.cs" />
+    <Compile Include="Models\Dao\UkolVedeniDao.cs" />
+    <Compile Include="Models\Dao\SubUkolDao.cs" />
+    <Compile Include="Models\Dao\UzivatelDao.cs" />
+    <Compile Include="Models\DataUnit\DbError.cs" />
+    <Compile Include="Models\DataUnit\HomeCollection.cs" />
+    <Compile Include="Models\DataUnit\Lop.cs" />
+    <Compile Include="Models\DataUnit\DbbDilna.cs" />
+    <Compile Include="Models\DataUnit\DilnyUzivatelu.cs" />
+    <Compile Include="Models\DataUnit\LopWorkFlowEvent.cs" />
+    <Compile Include="Models\DataUnit\VedouciOdeleni.cs" />
+    <Compile Include="Models\DataUnit\Usek.cs" />
+    <Compile Include="Models\DataUnit\Oddeleni.cs" />
+    <Compile Include="Models\DataUnit\UkolVedeniHistoryMaterial.cs" />
+    <Compile Include="Models\DataUnit\LopHistoryMaterial.cs" />
+    <Compile Include="Models\DataUnit\UkolVzorkovaniHistoryVsUkolVzorkovani.cs" />
+    <Compile Include="Models\DataUnit\UkolVedeniHistoryVsUkolVedeni.cs" />
+    <Compile Include="Models\DataUnit\UkolOddeleniHistoryVsUkolOddeleni.cs" />
+    <Compile Include="Models\DataUnit\SubUkolHistoryVsSubUkol.cs" />
+    <Compile Include="Models\DataUnit\LopHistoryVsLop.cs" />
+    <Compile Include="Models\DataUnit\LopMaterial.cs" />
+    <Compile Include="Models\DataUnit\Material.cs" />
+    <Compile Include="Models\DataUnit\Notifikace.cs" />
+    <Compile Include="Models\DataUnit\UkolVzorkovaniMaterial.cs" />
+    <Compile Include="Models\DataUnit\UkolOddeleniMaterial.cs" />
+    <Compile Include="Models\DataUnit\UkolVedeniMaterial.cs" />
+    <Compile Include="Models\DataUnit\UkolVzorkovani.cs" />
+    <Compile Include="Models\DataUnit\UkolOddeleni.cs" />
+    <Compile Include="Models\DataUnit\UkolVedeni.cs" />
+    <Compile Include="Models\DataUnit\Users\CustomTableSetting.cs" />
+    <Compile Include="Models\DataUnit\Users\Permission.cs" />
+    <Compile Include="Models\DataUnit\Users\Role.cs" />
+    <Compile Include="Models\DataUnit\Users\Uzivatel.cs" />
+    <Compile Include="Models\Email.cs" />
+    <Compile Include="Models\Interface\IDaoBase.cs" />
+    <Compile Include="Models\Interface\IEntity.cs" />
+    <Compile Include="Models\NHibernateHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="nhibernate-mapping.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\Lop.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\LopHistory.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\SubUkolHistory.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\SubUkol.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\Uzivatel.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\Role.hbm.xml" />
+    <EmbeddedResource Include="Mapping\Permission.hbm.xml" />
+    <EmbeddedResource Include="Mapping\Material.hbm.xml" />
+    <EmbeddedResource Include="Mapping\Notifikace.hbm.xml" />
+    <EmbeddedResource Include="Mapping\UkolVedeni.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\UkolVedeniHistory.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\UkolOddeleni.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\UkolOddeleniHistory.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\UkolVzorkovani.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\UkolVzorkovaniHistory.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mapping\LopMaterial.hbm.xml" />
+    <EmbeddedResource Include="Mapping\UkolVedeniMaterial.hbm.xml" />
+    <EmbeddedResource Include="Mapping\UkolOddeleniMaterial.hbm.xml" />
+    <EmbeddedResource Include="Mapping\UkolVzorkovaniMaterial.hbm.xml" />
+    <EmbeddedResource Include="Mapping\DbError.hbm.xml" />
+    <EmbeddedResource Include="Mapping\LopHistoryMaterial.hbm.xml" />
+    <EmbeddedResource Include="Mapping\CustomTableSetting.hbm.xml" />
+    <EmbeddedResource Include="Mapping\UkolVedeniHistoryMaterial.hbm.xml" />
+    <EmbeddedResource Include="Mapping\Oddeleni.hbm.xml" />
+    <EmbeddedResource Include="Mapping\Usek.hbm.xml" />
+    <EmbeddedResource Include="Mapping\VedouciOdeleni.hbm.xml" />
+    <EmbeddedResource Include="Mapping\DbbDilna.hbm.xml" />
+    <EmbeddedResource Include="Mapping\DilnyUzivatelu.hbm.xml" />
+    <EmbeddedResource Include="Mapping\LopWorkFlowEvent.hbm.xml" />
+    <Content Include="SQL\PuvodniPDCAList.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQL\PDCAList_data_RELEASE.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQL\PDCAList_data_DEBUG.sql" />
+    <Content Include="SQL\PDCAList.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

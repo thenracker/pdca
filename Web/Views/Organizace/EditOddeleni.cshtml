@@ -1,0 +1,222 @@
+﻿@model DataAccess.Models.DataUnit.Oddeleni
+@{
+    ViewBag.Title = "Organizace";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<div>
+
+    <h1>@Model.Nazev</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-heading panel-success">
+            <a class="btn btn-default " href="@Url.Action("DetailOddeleni",new {id = Model.Id})">@Web.Resources.LopTexts.Zpet</a>
+
+        </div>
+        <div class="panel-body">
+            @using (Html.BeginForm("EditOddeleni", "Organizace", FormMethod.Post))
+            {
+                @Html.HiddenFor(x => x.Id)
+
+                <div class="form-group">
+                    <label class="control-label">@Web.Resources.LopTexts.Nazev</label>
+                    <div class="">
+                        @Html.TextBoxFor(x => x.Nazev, new {@class = "form-control", placeholder = "Název"})
+                        @Html.ValidationMessageFor(x => x.Nazev, null, new {@class = "text-danger"})
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label class="control-label">@Web.Resources.LopTexts.Usek</label>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModalUseky">@Web.Resources.LopTexts.Zmenit</button>
+                            </span>
+
+                        @Html.TextBoxFor(x => x.Usek.Nazev, new {@class = "form-control ", placeholder = "Název", disabled = "", Id = "usekName"})
+                        @Html.HiddenFor(x => x.UsekId, new {id = "hiddenUsekId"})
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                </div>
+
+                <div class="form-group">
+                    <div class="">
+                        <button disabled="disabled" type="submit" class="btn btn-primary btn-load" id="btn_confirm" data-loading-text="Ukládám...">
+                            @Web.Resources.LopTexts.Potvrdit <!-- TODO přesměrovat v controlleru do detailu -->
+                        </button>
+                    </div>
+                </div>
+
+            }
+        </div>
+
+    </div>
+
+    <h3>@Web.Resources.LopTexts.VedouciOddeleni</h3>
+    <div class="panel panel-default">
+
+        <div class="panel-heading panel-default">
+            
+
+            <button disabled="disabled" id="btn_show_oddeleni" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModalVedouci">
+                @Web.Resources.LopTexts.PridatExistujicihoZamestnance &nbsp;<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+
+
+        </div>
+        <div class="panel-body">
+
+            <table class="table table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th>@Web.Resources.LopTexts.Jmeno</th>
+                        <th>@Web.Resources.LopTexts.Operace</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model.VedouciOdeleni)
+                    {
+                        <tr>
+                            <td>@item.Uzivatel.Jmeno @item.Uzivatel.Prijmeni</td>
+                            <td>
+                                <a class="btn btn-primary" href="@Url.Action("DetailUzivatel", new {id = item.Id})"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+                                @if (Model.VedouciOdeleni.Count > 1)
+                                {
+                                    <a class="btn btn-danger " onclick=" return confirm('Opravdu odebrat vedoucího oddělení @Model.Nazev?') " href="@Url.Action("RemoveVedouciFromOddeleni", new {windowsId = item.WindowsId, oddeleniId = Model.Id})"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModalUseky" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">@Web.Resources.LopTexts.VyberUseku</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-condensed" id="zaznamy">
+                        <thead>
+                            <tr>
+                                <th>@Web.Resources.LopTexts.Nazev</th>
+                                <th>@Web.Resources.LopTexts.Operace</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Web.Resources.LopTexts.Zavrit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModalVedouci" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">@Web.Resources.LopTexts.VyberVedouciho</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-condensed" id="zaznamyOddeleni">
+                        <thead>
+                            <tr>
+                                <th>@Web.Resources.LopTexts.Jmeno</th>
+                                <th>@Web.Resources.LopTexts.Operace</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Web.Resources.LopTexts.Zavrit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Script{
+    <script type="text/javascript" src="@Url.Content("~/scripts/tinymce/tinymce.min.js")"></script>
+    <script type="text/javascript">tinymce.init({ selector: '.formatedtext' });</script>
+    <script type="text/javascript" src="@Url.Content("~/scripts/datatables.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/scripts/bootstrap-datepicker.js")"></script>
+    @if (Web.Resources.HomeTexts.lang == "cs")
+    {
+        <script type="text/javascript" src="@Url.Content("~/scripts/locales/bootstrap-datepicker.cs.min.js")"></script>
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            loadUseky();
+            loadUzivatele();
+        });
+        loadUseky = function () {
+            $.getJSON('/api/ApiUsek?json=true').done(function (data) {
+                $.each(data, function (key, val) {
+                    $("#zaznamy").find('tbody')
+                        .append($('<tr>')
+                            .append($('<td>')
+                                .text(val['Nazev'])
+                            )
+                            .append($('<td>')
+                                .append($('<button>')
+                                    .attr('class', 'btn btn-default btn-sm')
+                                    .attr('onclick', 'fillUsek(\'' + val['UsekId'] + '\', \'' + val['Nazev'] + '\')')
+                                    .text('Vybrat')
+                                )
+                            )
+                        );
+                });
+
+            });
+        }
+        loadUzivatele = function () {
+            $.getJSON('/api/ApiUzivatel?json=true&oddeleniId=@Model.Id').done(function (data) {
+                $.each(data, function (key, val) {
+                    $("#zaznamyOddeleni").find('tbody')
+                        .append($('<tr>')
+                            .append($('<td>')
+                                .text(val['Jmeno'] + ' ' + val['Prijmeni'])
+                            )
+                            .append($('<td>')
+                                .append($('<button>')
+                                    .attr('class', 'btn btn-default btn-sm')
+                                    .attr('onclick', 'fillVedouci(\'' + (val['WindowsId']).replace('\\', '\\\\') + '\', \'' + @(Model.Id) + '\')')
+                                    .text('Přidat')
+                                )
+                            )
+                        );
+                });
+
+            });
+        }
+        fillUsek = function (usekId,usekNazev) {
+            $("#usekName").val("" + usekNazev);
+            $("#hiddenUsekId").val(usekId);
+            $('#myModalUseky').modal('toggle');
+        }
+        fillVedouci = function(windowsId, oddeleniId) {
+            window.location.href = '@Url.Action("AddVedouciToOddeleni")' + '?oddeleniId=' + oddeleniId + '&windowsId=' + windowsId;
+        }
+    </script>
+}

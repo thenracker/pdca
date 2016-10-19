@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="DataAccess"
+                   namespace="DataAccess.Models.DataUnit.Users">
+
+  <class name="CustomTableSetting">
+    <id name="Id" >
+      <generator class="native" />
+    </id>
+    <many-to-one class="Uzivatel" name="Uzivatel" />
+    <property name="Tabulka" />
+    <property name="Sloupec" />
+    <property name="Zobrazit" />
+  </class>
+
+</hibernate-mapping>

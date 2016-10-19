@@ -1,0 +1,42 @@
+﻿@model IList<DataAccess.Models.DataUnit.Usek>
+@{
+    ViewBag.Title = "Organizace";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<div>
+
+    <h1>@Web.Resources.LopTexts.Organizace</h1>
+    <div class="panel panel-default">
+        <div class="panel-heading panel-success">
+            <a class="btn btn-default " href="@Url.Action("Index","Home")">Zpět</a>
+            <a class="btn btn-primary pull-right disabled" href="@Url.Action("CreateUsek")">@Web.Resources.LopTexts.NovyUsek</a>
+        </div>
+        <div class="panel-body">
+            <table class="table table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th>@Web.Resources.LopTexts.Nazev</th>
+                        <th>@Web.Resources.LopTexts.Vedouci</th>
+                        <th>@Web.Resources.LopTexts.Operace</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Nazev</td>
+                            <td>@item.Vedouci.Jmeno @item.Vedouci.Prijmeni</td>
+                            <td>
+                                <a class="btn btn-primary" href="@Url.Action("DetailUsek", new { id = item.Id})"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+                                <a class="btn btn-warning" href="@Url.Action("EditUsek", new { id = item.Id})"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                                <a class="btn btn-danger disabled" onclick="return confirm('Opravdu odstranit oddělení @item.Nazev?')" href="@Url.Action("DeleteUsek", new { id = item.Id})"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

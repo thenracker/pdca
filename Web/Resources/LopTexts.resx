@@ -1,0 +1,555 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="ByloOdmitnutoReseniPodukolu" xml:space="preserve">
+    <value>Bylo odmítnuto řešení podúkolu</value>
+  </data>
+  <data name="ByloOdmitnutoReseniUkolu" xml:space="preserve">
+    <value>Bylo odmítnuto řešení úkolu</value>
+  </data>
+  <data name="ByloPrijatoReseniLopu" xml:space="preserve">
+    <value>Bylo přijato řešení úkolu</value>
+  </data>
+  <data name="ByloPrijatoReseniPodukolu" xml:space="preserve">
+    <value>Bylo přijato řešení podúkolu</value>
+  </data>
+  <data name="BylUpravenLop" xml:space="preserve">
+    <value>Byl upraven úkol</value>
+  </data>
+  <data name="BylVamPridelenNovyPodukol" xml:space="preserve">
+    <value>Byl Vám přidělen nový podúkol</value>
+  </data>
+  <data name="BylVamPridelenNovyUkol" xml:space="preserve">
+    <value>Byl Vám přidělen nový úkol</value>
+  </data>
+  <data name="CelkemSubukolu" xml:space="preserve">
+    <value>Celkem podúkolů</value>
+  </data>
+  <data name="CelkoveVyreseniUkolu" xml:space="preserve">
+    <value>Celkové procentuální vyřešení úkolu</value>
+  </data>
+  <data name="CheckDate" xml:space="preserve">
+    <value>Datum kontroly (zadavatelem)</value>
+  </data>
+  <data name="CloseDate" xml:space="preserve">
+    <value>Datum uzavření (řešitelem)</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Smazat</value>
+  </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Detail</value>
+  </data>
+  <data name="DosloKNeocekavaneChybe" xml:space="preserve">
+    <value>Došlo k neočekávané chybě</value>
+  </data>
+  <data name="EditSubUkol" xml:space="preserve">
+    <value>Upravit podúkol</value>
+  </data>
+  <data name="FinishDate" xml:space="preserve">
+    <value>Datum ukončení (zadavatelem)</value>
+  </data>
+  <data name="History" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="HotoveLopy" xml:space="preserve">
+    <value>Hotové úkoly</value>
+  </data>
+  <data name="HotoveSubukoly" xml:space="preserve">
+    <value>Hotové podúkoly</value>
+  </data>
+  <data name="HotoveUkoly" xml:space="preserve">
+    <value>Hotové úkoly</value>
+  </data>
+  <data name="Investice" xml:space="preserve">
+    <value>Investice</value>
+  </data>
+  <data name="Komentar" xml:space="preserve">
+    <value>Komentář</value>
+  </data>
+  <data name="LastChangedDate" xml:space="preserve">
+    <value>Poslední změna</value>
+  </data>
+  <data name="LegendaPodbarveni" xml:space="preserve">
+    <value>Legenda podbarvení řádků</value>
+  </data>
+  <data name="LessonLearned" xml:space="preserve">
+    <value>Lesson Learned</value>
+  </data>
+  <data name="ListLop" xml:space="preserve">
+    <value>Seznam úkolů</value>
+  </data>
+  <data name="ListLopsDetailed" xml:space="preserve">
+    <value>Seznam úkolů detailně</value>
+  </data>
+  <data name="LopDetail" xml:space="preserve">
+    <value>Detail úkolu</value>
+  </data>
+  <data name="LopUspesneAktualizovan" xml:space="preserve">
+    <value>Úkol úspěšně aktualizován</value>
+  </data>
+  <data name="LopyKeKontrole" xml:space="preserve">
+    <value>Úkoly ke kontrole</value>
+  </data>
+  <data name="Material" xml:space="preserve">
+    <value>Materiál</value>
+  </data>
+  <data name="MaterialDruh" xml:space="preserve">
+    <value>Druh</value>
+  </data>
+  <data name="MaterialSapCislo" xml:space="preserve">
+    <value>Sap číslo</value>
+  </data>
+  <data name="MaterialSapPopis" xml:space="preserve">
+    <value>Sap popis</value>
+  </data>
+  <data name="Nazev" xml:space="preserve">
+    <value>Název</value>
+  </data>
+  <data name="NebylPridanProdukt" xml:space="preserve">
+    <value>Nebyl přidán produkt</value>
+  </data>
+  <data name="NebylyProvedenyZadneZmeny" xml:space="preserve">
+    <value>Nebyly provedeny žádné změny</value>
+  </data>
+  <data name="NechciSePodiletNaReseni" xml:space="preserve">
+    <value>Nechci se podílet na řešení</value>
+  </data>
+  <data name="NelzeUkoncitUkol1" xml:space="preserve">
+    <value>Nelze ukončit úkol, některé podúkoly</value>
+  </data>
+  <data name="NelzeUkoncitUkol2" xml:space="preserve">
+    <value>je ještě potřeba vyřešit</value>
+  </data>
+  <data name="NepodariloSeOdmitnoutPodukol" xml:space="preserve">
+    <value>Nepodařilo se odmítnout podúkol</value>
+  </data>
+  <data name="NepodariloSeOdmitnoutUkol" xml:space="preserve">
+    <value>Nepodařilo se odmítnout úkol</value>
+  </data>
+  <data name="NepodariloSePripojeniProduktuKUkolu" xml:space="preserve">
+    <value>Nepodařilo se připojení produktů k úkolu</value>
+  </data>
+  <data name="NepodariloSeUpravitZaznam" xml:space="preserve">
+    <value>Nepodařilo se upravit záznam</value>
+  </data>
+  <data name="NesplneneLopy" xml:space="preserve">
+    <value>Nesplněné úkoly</value>
+  </data>
+  <data name="NesplneneSubukoly" xml:space="preserve">
+    <value>Nesplněné podúkoly</value>
+  </data>
+  <data name="NesplneneUkoly" xml:space="preserve">
+    <value>Nesplněné úkoly</value>
+  </data>
+  <data name="NovyLop" xml:space="preserve">
+    <value>Nový úkol</value>
+  </data>
+  <data name="NovySubUkol" xml:space="preserve">
+    <value>Nový podúkol</value>
+  </data>
+  <data name="NovyUkol" xml:space="preserve">
+    <value>Nový úkol</value>
+  </data>
+  <data name="OdmitlResitPodukol" xml:space="preserve">
+    <value>odmítl řešit podúkol</value>
+  </data>
+  <data name="OdmitlResitUkol" xml:space="preserve">
+    <value>odmítl řešit úkol</value>
+  </data>
+  <data name="OdmitnoutReseni" xml:space="preserve">
+    <value>Odmítnout řešení</value>
+  </data>
+  <data name="Odmitnuto" xml:space="preserve">
+    <value>Odmítnuto řešitelem</value>
+  </data>
+  <data name="Operace" xml:space="preserve">
+    <value>Operace</value>
+  </data>
+  <data name="OznacitNevyreseny" xml:space="preserve">
+    <value>Označit jako nevyřešený</value>
+  </data>
+  <data name="OznacitVyreseny" xml:space="preserve">
+    <value>Označit jako vyřešený</value>
+  </data>
+  <data name="PlannedCloseDate" xml:space="preserve">
+    <value>Plánované datum ukončení</value>
+  </data>
+  <data name="PlannedCloseDateShort" xml:space="preserve">
+    <value>Plán. datum ukončení</value>
+  </data>
+  <data name="PodukolBylOdmitnut" xml:space="preserve">
+    <value>Podúkol byl odmítnut</value>
+  </data>
+  <data name="PodukolBylOznacenJakoVyreseny" xml:space="preserve">
+    <value>Podúkol byl označen jako vyřešený</value>
+  </data>
+  <data name="PodukolBylVyresen" xml:space="preserve">
+    <value>Podúkol byl vyřešen</value>
+  </data>
+  <data name="PodukolJeZnovuVReseni" xml:space="preserve">
+    <value>Podúkol je znovu v řešení</value>
+  </data>
+  <data name="PodukolPridany" xml:space="preserve">
+    <value>Podúkol přidaný</value>
+  </data>
+  <data name="PodukolSmazan" xml:space="preserve">
+    <value>Podúkol smazán</value>
+  </data>
+  <data name="Popis" xml:space="preserve">
+    <value>Popis</value>
+  </data>
+  <data name="PoslatUpozorneniResiteli" xml:space="preserve">
+    <value>Poslat upozornění řešiteli</value>
+  </data>
+  <data name="PoslatUpozorneniZadavateli" xml:space="preserve">
+    <value>Poslat upozornění zadavateli</value>
+  </data>
+  <data name="Potvrdit" xml:space="preserve">
+    <value>Potvrdit</value>
+  </data>
+  <data name="Poznamka" xml:space="preserve">
+    <value>Poznámka</value>
+  </data>
+  <data name="PridatPodukol" xml:space="preserve">
+    <value>Přidat podúkol</value>
+  </data>
+  <data name="PrijmoutReseni" xml:space="preserve">
+    <value>Přijmout řešení</value>
+  </data>
+  <data name="ProcentualniStavySubukolu" xml:space="preserve">
+    <value>Procentuální stavy subúkolů v lopu</value>
+  </data>
+  <data name="Produkt" xml:space="preserve">
+    <value>Produkt</value>
+  </data>
+  <data name="ProduktyVazane" xml:space="preserve">
+    <value>Provázané produkty</value>
+  </data>
+  <data name="ProvazaneMaterialyBylyAktualizovany" xml:space="preserve">
+    <value>Provázané materiály byly aktualizovány</value>
+  </data>
+  <data name="ProvedeneZmeny" xml:space="preserve">
+    <value>Provedené změny</value>
+  </data>
+  <data name="Resitel" xml:space="preserve">
+    <value>Řešitel</value>
+  </data>
+  <data name="SeznamUkolu" xml:space="preserve">
+    <value>Seznam úkolů</value>
+  </data>
+  <data name="SeznamUkoluOddeleni" xml:space="preserve">
+    <value>Seznam úkolů oddělení</value>
+  </data>
+  <data name="SeznamUkoluVedeni" xml:space="preserve">
+    <value>Seznam úkolů vedení</value>
+  </data>
+  <data name="SeznamUkoluVzorkovani" xml:space="preserve">
+    <value>Seznam úkolů vzorkování</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Datum zahájení</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="SubUkol" xml:space="preserve">
+    <value>Podúkol</value>
+  </data>
+  <data name="SubUkolDetail" xml:space="preserve">
+    <value>Detail podúkolu</value>
+  </data>
+  <data name="SubUkoly" xml:space="preserve">
+    <value>Podúkoly</value>
+  </data>
+  <data name="SubukolyKeKontrole" xml:space="preserve">
+    <value>Podúkoly ke kontrole</value>
+  </data>
+  <data name="UkolBylOdmitnut" xml:space="preserve">
+    <value>Úkol byl odmítnut</value>
+  </data>
+  <data name="UkolBylOznacenJakoVyreseny" xml:space="preserve">
+    <value>Úkol byl označen jako vyřešený</value>
+  </data>
+  <data name="UkolBylVyresen" xml:space="preserve">
+    <value>Úkol byl vyřešen</value>
+  </data>
+  <data name="UkolJeZnovuVReseni" xml:space="preserve">
+    <value>Úkol je znovu v řešení</value>
+  </data>
+  <data name="UkolOddeleni" xml:space="preserve">
+    <value>Úkol oddělení</value>
+  </data>
+  <data name="UkolOddeleniDetail" xml:space="preserve">
+    <value>Deatil úkolu oddělení</value>
+  </data>
+  <data name="UkolPridany" xml:space="preserve">
+    <value>Úkol přidaný</value>
+  </data>
+  <data name="UkolSmazan" xml:space="preserve">
+    <value>Úkol smazán</value>
+  </data>
+  <data name="UkolVedeni" xml:space="preserve">
+    <value>Úkol vedení</value>
+  </data>
+  <data name="UkolVedeniDetail" xml:space="preserve">
+    <value>Deatil úkolu vedení</value>
+  </data>
+  <data name="UkolVzorkovani" xml:space="preserve">
+    <value>Úkol vzorkování</value>
+  </data>
+  <data name="UkolVzorkovaniDeatil" xml:space="preserve">
+    <value>Deatil úkolu vzorkování</value>
+  </data>
+  <data name="UkolyKeKontrole" xml:space="preserve">
+    <value>Úkoly ke kontrole</value>
+  </data>
+  <data name="Upravit" xml:space="preserve">
+    <value>Upravit</value>
+  </data>
+  <data name="UpravitPodukol" xml:space="preserve">
+    <value>Upravit podúkol</value>
+  </data>
+  <data name="UpravitUkol" xml:space="preserve">
+    <value>Upravit úkol</value>
+  </data>
+  <data name="VasKomentar" xml:space="preserve">
+    <value>Váš komentář</value>
+  </data>
+  <data name="VybratProdukty" xml:space="preserve">
+    <value>Vybrat produkty</value>
+  </data>
+  <data name="Zadavatel" xml:space="preserve">
+    <value>Zadavatel</value>
+  </data>
+  <data name="Zavrit" xml:space="preserve">
+    <value>Zavřít</value>
+  </data>
+  <data name="ZkontrolovatReseni" xml:space="preserve">
+    <value>Zkontrolovat řešení</value>
+  </data>
+  <data name="ZkontrolujteZadaneUdaje" xml:space="preserve">
+    <value>Zkontrolujte zadané údaje</value>
+  </data>
+  <data name="ZmenenePolozky" xml:space="preserve">
+    <value>Změněné položky</value>
+  </data>
+  <data name="Zmenil" xml:space="preserve">
+    <value>Změnil</value>
+  </data>
+  <data name="ZmenyUspesneUlozeny" xml:space="preserve">
+    <value>Změny úspěšně uloženy</value>
+  </data>
+  <data name="ZobrazSmazane" xml:space="preserve">
+    <value>Zobrazit smazané úkoly</value>
+  </data>
+  <data name="ZpetNaLopDetail" xml:space="preserve">
+    <value>Zpět na detail</value>
+  </data>
+  <data name="ZpetNaVypis" xml:space="preserve">
+    <value>Zpět na výpis</value>
+  </data>
+  <data name="Zrusit" xml:space="preserve">
+    <value>Zrušit</value>
+  </data>
+  <data name="ZobrazPuvodni" xml:space="preserve">
+    <value>Zobrazit aktuální úkoly</value>
+  </data>
+  <data name="ListLopDeleted" xml:space="preserve">
+    <value>Seznam smazaných úkolů</value>
+  </data>
+  <data name="Dilna" xml:space="preserve">
+    <value>Dílna</value>
+  </data>
+  <data name="PuvodniHodnoty" xml:space="preserve">
+    <value>Původní hodnoty</value>
+  </data>
+  <data name="PrehledPodukolu" xml:space="preserve">
+    <value>Přehled podúkolů</value>
+  </data>
+  <data name="MaxPlannedCloseDate" xml:space="preserve">
+    <value>Nejzašší plánované ukončení</value>
+  </data>
+  <data name="ZobrazitMene" xml:space="preserve">
+    <value>zobrazit méně</value>
+  </data>
+  <data name="ZobrazitVice" xml:space="preserve">
+    <value>zobrazit více</value>
+  </data>
+  <data name="Jmeno" xml:space="preserve">
+    <value>Jméno</value>
+  </data>
+  <data name="NoveOddeleni" xml:space="preserve">
+    <value>Nové oddělení</value>
+  </data>
+  <data name="NovyUsek" xml:space="preserve">
+    <value>Nový úsek</value>
+  </data>
+  <data name="Oddeleni" xml:space="preserve">
+    <value>Oddělení</value>
+  </data>
+  <data name="Organizace" xml:space="preserve">
+    <value>Organizace</value>
+  </data>
+  <data name="PridatExistujicihoZamestnance" xml:space="preserve">
+    <value>Přidat existujícího zaměstnance</value>
+  </data>
+  <data name="PridatExistujiciOddeleni" xml:space="preserve">
+    <value>Přidat existující oddělení</value>
+  </data>
+  <data name="UpravitOddeleni" xml:space="preserve">
+    <value>Upravit oddělení</value>
+  </data>
+  <data name="UpravitUsek" xml:space="preserve">
+    <value>Upravit úsek</value>
+  </data>
+  <data name="Usek" xml:space="preserve">
+    <value>Úsek</value>
+  </data>
+  <data name="Uzivatele" xml:space="preserve">
+    <value>Uživatelé</value>
+  </data>
+  <data name="Vedouci" xml:space="preserve">
+    <value>Vedoucí</value>
+  </data>
+  <data name="VedouciOddeleni" xml:space="preserve">
+    <value>Vedoucí oddělení</value>
+  </data>
+  <data name="VedouciUseku" xml:space="preserve">
+    <value>Vedoucí úseku</value>
+  </data>
+  <data name="VyberUseku" xml:space="preserve">
+    <value>Výběr úseku</value>
+  </data>
+  <data name="VyberVedouciho" xml:space="preserve">
+    <value>Výběr vedoucího</value>
+  </data>
+  <data name="Zmenit" xml:space="preserve">
+    <value>Změnit</value>
+  </data>
+  <data name="Zpet" xml:space="preserve">
+    <value>Zpět</value>
+  </data>
+  <data name="PridatDilnuUzivateli" xml:space="preserve">
+    <value>Přidat dílnu uživateli</value>
+  </data>
+</root>

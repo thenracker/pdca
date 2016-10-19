@@ -1,0 +1,163 @@
+﻿@model DataAccess.Models.DataUnit.SubUkolHistoryVsSubUkol
+@{
+    Layout = null;
+}
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Detail historie</h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="pull-right">
+                <div class="@((Model.LH.Action != Model.L.Action) ? "historyChanged" : "")">@Model.LH.Action.ToString()</div>
+                <br/>
+
+                <div class="@((Model.LH.Status != Model.L.Status) ? "historyChanged" : "")">@Model.LH.Status.ToString()</div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label>@Web.Resources.LopTexts.Nazev</label>
+                <div class="@((Model.LH.Nazev != Model.L.Nazev) ? "historyChanged" : "")">
+                    <h4>@Model.LH.Nazev </h4>
+                </div>
+            </div>
+            <div class="form-group" id="shmr">
+                <div class="@((Model.LH.Popis != Model.L.Popis) ? "historyChanged" : "")">
+                    @if (!string.IsNullOrEmpty(Model.LH.Popis) && Model.LH.Popis.Length > 300)
+                    {
+
+                        @Html.Raw(Model.LH.Popis.Substring(0, 300) + "...  <a onclick=\"document.getElementById('shmr').innerHTML = '" + Html.Raw(Model.LH.Popis) + "'\"> " + Web.Resources.LopTexts.ZobrazitVice + " </a>")
+
+                    }
+                    else
+                    {
+                        @Html.Raw(Model.LH.Popis)
+                    }
+                </div>
+
+            </div>
+
+            <table>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label> @Web.Resources.LopTexts.Zadavatel</label>
+                            <div class="@((Model.LH.Zadavatel.Id != Model.L.Zadavatel.Id) ? "historyChanged" : "")">@Model.LH.Zadavatel.ToString() </div>
+                        </div>
+                    </td>
+                    <td style="padding-left: 10px;">
+                        <div class="form-group">
+                            <label> @Web.Resources.LopTexts.Resitel</label>
+                            <div class="@((Model.LH.Resitel.Id != Model.L.Resitel.Id) ? "historyChanged" : "")">@Model.LH.Resitel.ToString()</div>
+                            @if (!string.IsNullOrEmpty(Model.LH.DeniedMessage))
+                            {
+                                <span class="label label-danger">@Web.Resources.LopTexts.Odmitnuto</span>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <hr style="margin-bottom: 0; margin-top: 1px" />
+            <table>
+                <tr>
+                    <td><label> @Web.Resources.LopTexts.StartDate</label></td>
+                    <td style="padding-left: 10px;"><label> @Web.Resources.LopTexts.PlannedCloseDate</label></td>
+                    <td style="padding-left: 10px;"><label> @Web.Resources.LopTexts.CloseDate</label> <!--deadline - přepsat v resource na datum ukonč TODO--></td>
+                    <td style="padding-left: 10px;"><label> @Web.Resources.LopTexts.CheckDate</label></td>
+                    <td style="padding-left: 10px;"><label> @Web.Resources.LopTexts.FinishDate</label></td>
+                    <td style="padding-left: 10px;"><label> @Web.Resources.LopTexts.LastChangedDate</label></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <div>
+                                <div class="@((Model.LH.StartDate != Model.L.StartDate) ? "historyChanged" : "")">
+                                    @(((DateTime)Model.LH.StartDate).ToShortDateString())
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="padding-left: 10px;">
+                        <div class="form-group">
+                            <div>
+
+                                <div class="@((Model.LH.PlannedCloseDate != Model.L.PlannedCloseDate) ? "historyChanged" : "")">
+                                    @(((DateTime)Model.LH.PlannedCloseDate).ToShortDateString())
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="padding-left: 10px;">
+                        <div class="form-group">
+
+                            <div>
+                                @if (Model.LH.CloseDate != null)
+                                {
+
+                                    <div class="@((Model.LH.CloseDate != Model.L.CloseDate) ? "historyChanged" : "")">
+                                        @(((DateTime)Model.LH.CloseDate).ToShortDateString())
+                                    </div>
+                                }
+                                else
+                                {
+                                    @Html.Raw("-")
+                                }
+                            </div>
+                        </div>
+                    </td>
+                    <td style="padding-left: 10px;">
+                        <div class="form-group">
+                            <div>
+                                @if (Model.LH.CheckDate != null)
+                                {
+
+                                    <div class="@((Model.LH.CheckDate != Model.L.CheckDate) ? "historyChanged" : "")">
+                                        @(((DateTime)Model.LH.CheckDate).ToShortDateString())
+                                    </div>
+                                }
+                                else
+                                {
+                                    @Html.Raw("-")
+                                }
+                            </div>
+                        </div>
+                    </td>
+                    <td style="padding-left: 10px;">
+                        <div class="form-group">
+                            <div>
+                                @if (Model.LH.FinishDate != null)
+                                {
+
+                                    <div class="@((Model.LH.FinishDate != Model.L.FinishDate) ? "historyChanged" : "")">
+                                        @(((DateTime)Model.LH.FinishDate).ToShortDateString())
+                                    </div>
+                                }
+                                else
+                                {
+                                    @Html.Raw("-")
+                                }
+                            </div>
+                        </div>
+                    </td>
+                    <td style="padding-left: 10px;">
+                        <div class="form-group">
+                            <div>
+
+                                <div class="@((Model.LH.LastChangedDate != Model.L.LastChangedDate) ? "historyChanged" : "")">
+                                    @(((DateTime)Model.LH.LastChangedDate).ToShortDateString())
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+
+        </div>
+    </div>
+</div>

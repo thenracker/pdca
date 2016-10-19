@@ -1,0 +1,48 @@
+﻿@using DataAccess.Models.DataUnit.Users
+@model Uzivatel
+@{
+    Layout = "";
+}
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">@Model</h4>
+        </div>
+        <div class="modal-body">
+            <table class="table table-striped">
+                <tr>
+                    <td>@Web.Resources.UzivatelTexts.PersonalNumber</td>
+                    <td>@Model.OsCislo</td>
+                </tr>
+                <tr>
+                    <td>@Web.Resources.UzivatelTexts.WindowsId</td>
+                    <td>@Model.WindowsId</td>
+                </tr>
+                <tr>
+                    <td>@Web.Resources.UzivatelTexts.Name</td>
+                    <td>@Model</td>
+                </tr>
+                <tr>
+                    <td>@Web.Resources.UzivatelTexts.Email</td>
+                    <td>@Model.Email</td>
+                </tr>
+                <tr>
+                    <td>@Web.Resources.UzivatelTexts.Department</td>
+                    <td>@Model.Oddeleni</td>
+                </tr>
+                <tr>
+                    <td>@Web.Resources.UzivatelTexts.Division</td>
+                    <td>@Model.Oddeleni.Usek</td>
+                </tr>
+                <tr>
+                    <td>@Web.Resources.UzivatelTexts.Permissions</td>
+                    <td>@Model.Role</td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
+        </div>
+    </div>
+</div>

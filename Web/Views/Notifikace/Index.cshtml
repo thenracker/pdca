@@ -1,0 +1,48 @@
+﻿@using DataAccess.Models.DataUnit
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    //TODO Dodelat "precteno" + nastylovat, poresit strankovani??
+}
+
+
+<h2>Nové notifikace</h2>
+    <table class="table table-hover table-condensed notifikaceVypis">
+        <thead>
+            <tr>
+                <th>Notifikace</th>
+                <th>Datum</th>
+                <th>-</th>  
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in (IList<Notifikace>)ViewBag.nove)
+            {
+                <tr>
+                    <td>@Html.Raw(item.Text)</td>
+                    <td>@item.Created.ToString()</td>
+                    <td>x</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+<h2>Přečtené notifikace</h2>
+<table class="table table-hover table-condensed notifikaceVypis">
+    <thead>
+        <tr>
+            <th>Notifikace</th>
+            <th>Datum</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in (IList<Notifikace>)ViewBag.seen)
+        {
+            <tr>
+                <td>@Html.Raw(item.Text)</td>
+                <td>@item.Created.ToString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

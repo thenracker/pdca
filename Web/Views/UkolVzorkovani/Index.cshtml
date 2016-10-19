@@ -1,0 +1,77 @@
+﻿@using DataAccess.Models.DataUnit
+@model IEnumerable<UkolVzorkovani>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h1>
+
+    @Web.Resources.LopTexts.SeznamUkoluVzorkovani
+    <a class="btn btn-primary pull-right" href="@Url.Action("Create", "UkolVzorkovani")">@Web.Resources.LopTexts.NovyUkol</a>
+
+</h1>
+
+<table class="table table-condensed">
+    <thead>
+        <tr>
+
+            <th>@Web.Resources.LopTexts.Action</th>
+            <th>@Web.Resources.LopTexts.Status</th>
+            <th>@Web.Resources.LopTexts.Nazev</th>
+            <th>@Web.Resources.LopTexts.StartDate</th>
+            <th>@Web.Resources.LopTexts.PlannedCloseDate</th>
+            <th>@Web.Resources.LopTexts.Produkt</th>
+            <th>@Web.Resources.LopTexts.Resitel</th>
+            <th>@Web.Resources.LopTexts.LastChangedDate</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (UkolVzorkovani uv in Model)
+        {
+            <tr class="@((uv.DateFinish != null) ? "success" : (uv.Status == StatusUkolu.Closed?"warning":(uv.ShouldBeAlreadyDone()?"danger":"")))">
+                <td>@uv.Action</td>
+                <td>@uv.Status</td>
+                <td>@uv.Nazev</td>
+                <td>
+                    @(((DateTime)uv.DateStart).ToShortDateString())
+                </td>
+                <td>
+                    @(((DateTime)uv.DatePlannedClose).ToShortDateString())
+                </td>
+
+                <td>
+                    @for (int i = 0; i < uv.Materialy.Count; i++)
+                    {
+                        if (i == uv.Materialy.Count - 1)
+                        {
+                            @(uv.Materialy[i].Produkt.Druh + " " + uv.Materialy[i].Produkt.Pn)
+                        }
+                        else
+                        {
+                            @Html.Raw(uv.Materialy[i].Produkt.Druh + " " + uv.Materialy[i].Produkt.Pn + ",<br />")
+                        }
+                    }
+                </td>
+                <td>@uv.Resitel.ToString()</td>
+                <td>
+                    @(((DateTime)uv.DateLastChanged).ToString())
+                </td>
+                <td><a href="@Url.Action("Detail", "UkolVzorkovani", new {id = uv.Id})" class="btn btn-default">@Web.Resources.LopTexts.Detail</a></td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+
+
+<div class="form-group">
+    <div class="">
+        <span style="color: #777;">@Web.Resources.LopTexts.LegendaPodbarveni</span><br />
+        <span class="label label-success">@Web.Resources.LopTexts.HotoveUkoly</span>
+        <span class="label label-warning">@Web.Resources.LopTexts.UkolyKeKontrole</span>
+        <span class="label label-danger">@Web.Resources.LopTexts.NesplneneUkoly</span>
+    </div>
+</div>

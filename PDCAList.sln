@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{84866883-FAC5-4C00-85B6-5C10684E6094}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{DAE4A6CB-9E88-4D4C-9888-1CBE1C56135E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{84866883-FAC5-4C00-85B6-5C10684E6094}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84866883-FAC5-4C00-85B6-5C10684E6094}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84866883-FAC5-4C00-85B6-5C10684E6094}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84866883-FAC5-4C00-85B6-5C10684E6094}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAE4A6CB-9E88-4D4C-9888-1CBE1C56135E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAE4A6CB-9E88-4D4C-9888-1CBE1C56135E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAE4A6CB-9E88-4D4C-9888-1CBE1C56135E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAE4A6CB-9E88-4D4C-9888-1CBE1C56135E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://asap-apps.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Web\\Web.csproj
+		SccProjectName1 = Web
+		SccLocalPath1 = Web
+		SccProjectUniqueName2 = DataAccess\\DataAccess.csproj
+		SccProjectName2 = DataAccess
+		SccLocalPath2 = DataAccess
+	EndGlobalSection
+EndGlobal

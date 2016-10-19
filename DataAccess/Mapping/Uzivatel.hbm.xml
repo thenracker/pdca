@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="DataAccess"
+                   namespace="DataAccess.Models.DataUnit.Users">
+
+  <class name="Uzivatel">
+    <id name="Id" >
+      <generator class="native" />
+    </id>
+    <property name="WindowsId" />
+    <property name="OsCislo" />
+    <property name="Jmeno" />
+    <property name="Prijmeni" />
+    <property name="Email" />
+    <!--
+    <property name="Usek" /> 
+    <property name="Oddeleni" />
+    -->
+    <many-to-one class="DataAccess.Models.DataUnit.Oddeleni" name="Oddeleni" />
+
+
+    <bag name="DilnyUzivatelu"  inverse="true"
+                         cascade="all-delete-orphan" lazy="true">
+      <key column="Uzivatel" />
+      <one-to-many class="DataAccess.Models.DataUnit.DilnyUzivatelu" />
+    </bag>
+
+    <!--
+    <bag name="VedouciOdeleni" table="VedouciOddeleni">
+      <key column="WindowsId"/>
+      <many-to-many class="DataAccess.Models.DataUnit.Oddeleni" column="Oddeleni"/>
+    </bag>
+    lazy="true"
+    <bag name="VedouciOddeleni"  inverse="true" cascade="all-delete-orphan">
+      <key column="LopHistory" />
+      <one-to-many class="LopHistoryMaterial" />
+    </bag>
+    -->
+
+    <bag name="VlastniNastaveniZobrazeni" lazy="true" inverse="true"
+                         cascade="all-delete-orphan">
+      <key column="Uzivatel" />
+      <one-to-many class="CustomTableSetting" />
+    </bag>
+    
+  </class>
+
+</hibernate-mapping>
+
+
+<!--
+Person
+personId
+name
+
+Competency
+competencyId
+title
+
+Person_x_Competency
+personId
+competencyId
+
+<class name="Person">
+  <id ....>
+  <bag name="Competencies" table="Person_x_Competency">
+    <key column="personId"/>
+    <many-to-many class="Competency" column="competencyId"/>
+  </bag>
+</class>
+
+
+-->

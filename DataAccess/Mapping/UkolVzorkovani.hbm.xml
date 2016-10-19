@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="DataAccess"
+                   namespace="DataAccess.Models.DataUnit">
+
+  <class name="UkolVzorkovani">
+    <id name="Id" >
+      <generator class="native" />
+    </id>
+    <property name="Action" />
+    <property name="Status" />
+    <many-to-one class="DataAccess.Models.DataUnit.Users.Uzivatel" name="Zadavatel" />
+    <bag name="Materialy" lazy="true" inverse="true"
+                        cascade="all-delete-orphan">
+      <key column="Ukol" />
+      <one-to-many class="UkolVzorkovaniMaterial" />
+    </bag>
+    <property name="Nazev" />
+    <property name="Popis" type="StringClob" not-null="false" >
+      <column name="Popis" sql-type="text"/>
+    </property>
+    <property name="Komentar" />
+    <many-to-one class="DataAccess.Models.DataUnit.Users.Uzivatel" name="Resitel" />
+    <property name="DateStart" />
+    <property name="DatePlannedClose" />
+    <property name="DateDeadline" />
+    <property name="Poznamka" />
+    <property name="DateFinish" />
+    <property name="DateCheck" />
+    <property name="DateLastChanged" />
+    <property name="LessonLearned" />
+    <property name="Deleted" />
+
+    <bag name="History" lazy="true" inverse="true"
+                         cascade="all-delete-orphan">
+      <key column="UkolVzorkovani" />
+      <one-to-many class="UkolVzorkovaniHistory" />
+    </bag>
+  </class>
+
+</hibernate-mapping>

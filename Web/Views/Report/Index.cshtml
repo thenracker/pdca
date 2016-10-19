@@ -1,0 +1,81 @@
+﻿@using DataAccess.Models.Dao
+@model IList<ReportDao.UsekOddeleniWithCount>
+@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var labels = string.Empty;
+    var numbers = string.Empty;
+    foreach (var item in Model)
+    {
+        //labels += "\'" + item.Oddeleni + " (" + item.Usek + ")" + "\' ,";
+        labels += string.Format("\"{0} ({1})\",", item.Oddeleni, item.Usek);
+        numbers += string.Format("{0}, ",item.Pocet);
+    }
+}
+
+<div>
+
+    <h1>Report</h1>
+    <div class="panel panel-default">
+        <div class="panel-heading panel-success">
+            <a class="btn btn-default " href="@Url.Action("Index","Home")">Zpět</a>
+            
+        </div>
+        <div class="panel-body">
+            <h2>Report</h2>
+            @foreach (ReportDao.UsekOddeleniWithCount item in Model)
+            {
+                <p>
+                    @item.Usek - @item.Oddeleni: @item.Pocet
+                </p>
+            }
+            
+            <canvas id="myChart" width="400" height="100"></canvas>
+        
+     </div>
+    </div>
+</div>
+
+@section Script{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.0/Chart.min.js"></script>
+    <script type="text/javascript">
+        var ctx = document.getElementById("myChart");
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+
+                labels: [@Html.Raw(labels)],
+                datasets: [{
+                    label: 'Lopy dle oddělení',
+                    data: [@Html.Raw(numbers)],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+</script>
+}

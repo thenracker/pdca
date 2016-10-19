@@ -1,0 +1,94 @@
+﻿@model DataAccess.Models.DataUnit.UkolOddeleniHistoryVsUkolOddeleni
+@{
+    Layout = null;
+}
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Detail historie</h4>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="form-group">
+                <label>@Web.Resources.LopTexts.Nazev</label>
+                <div class="@((Model.UH.Nazev != Model.U.Nazev) ? "historyChanged" : "")">
+                    <h4>@Model.UH.Nazev </h4>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>@Web.Resources.LopTexts.Popis</label>
+                <div class="@((Model.UH.Popis != Model.U.Popis)? "historyChanged" : "")">@Html.Raw(Model.UH.Popis)</div>
+            </div>
+            <div class="form-group">
+                <label>@Web.Resources.LopTexts.Zadavatel</label>
+                <div class="@((Model.UH.Zadavatel.Id != Model.U.Zadavatel.Id)? "historyChanged" : "")">@Model.UH.Zadavatel.ToString() </div>
+            </div>
+
+            <div class="form-group">
+                <label> @Web.Resources.LopTexts.Resitel</label>
+                <div class="@((Model.UH.Resitel.Id != Model.U.Resitel.Id)? "historyChanged" : "")">@Model.UH.Resitel.ToString()</div>
+            </div>
+
+
+            <div class="form-group">
+                <label> @Web.Resources.LopTexts.StartDate</label>
+
+                <div class="@((Model.UH.DateStart != Model.U.DateStart)? "historyChanged" : "")">
+                    @if (Model.UH.DateStart != null)
+            {
+                        @(((DateTime)Model.UH.DateStart).ToShortDateString())
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label> @Web.Resources.LopTexts.PlannedCloseDate</label>
+
+                <div class="@((Model.UH.DatePlannedClose != Model.U.DatePlannedClose)? "historyChanged" : "")">
+                    @(((DateTime)Model.UH.DatePlannedClose).ToString("d.M.yyyy"))
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label> @Web.Resources.LopTexts.CloseDate</label> <!--deadline - přepsat v resource na datum ukonč TODO-->
+                <div class="@((Model.UH.DateDeadline != Model.U.DateDeadline)? "historyChanged" : "")">
+                    @if (Model.UH.DateDeadline != null)
+            {
+                        @(((DateTime)Model.UH.DateDeadline).ToShortDateString())
+                    }
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label> @Web.Resources.LopTexts.FinishDate</label>
+                <div class="@((Model.UH.DateFinish != Model.U.DateFinish)? "historyChanged" : "")">
+                    @if (Model.UH.DateFinish != null)
+            {
+                        @(((DateTime)Model.UH.DateFinish).ToShortDateString())
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label> @Web.Resources.LopTexts.Status</label>
+                <div class="@((Model.UH.Status != Model.U.Status)? "historyChanged" : "")">@Model.UH.Status</div>
+            </div>
+
+            <div class="form-group">
+                <label> @Web.Resources.LopTexts.LessonLearned</label>
+                <div class="@((Model.UH.LessonLearned != Model.U.LessonLearned)? "historyChanged" : "")">@Model.UH.LessonLearned</div>
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Web.Resources.LopTexts.Zavrit</button>
+            </div>
+
+        </div>
+    </div>
+</div>

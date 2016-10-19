@@ -1,0 +1,9 @@
+﻿@model DataAccess.Models.DataUnit.SubUkol
+@{
+    Layout = null;
+}
+
+@if (Model.Komentar != null || !Model.Komentar.IsEmpty())
+{
+    <p>@Html.Raw(Model.Komentar)</p>
+}

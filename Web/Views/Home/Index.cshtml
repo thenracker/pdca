@@ -1,0 +1,730 @@
+﻿@using DataAccess.Models.Dao
+@using DataAccess.Models.DataUnit
+
+@{
+    ViewBag.Title = "Hlavní strana";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+
+    var uzivatel = new UzivatelDao().GetByWindowsId(User.Identity.Name);
+
+    var listUkoluTableName = "home/index-meAsZadavatel";
+    var listUkoluTableName2 = "home/index-meAsResitel";
+}
+
+<h2>Mnou zadané</h2>
+<table class="table table-condensed table-striped" id="zaznamy">
+    <thead>
+        <tr>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "Id") ? "" : "display: none;")">Id</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "Action") ? "" : "display: none;")">@Web.Resources.LopTexts.Action</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "Status") ? "" : "display: none;")">@Web.Resources.LopTexts.Status</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "Dilna") ? "" : "display: none;")">@Web.Resources.LopTexts.Dilna</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "Nazev") ? "" : "display: none;")">@Web.Resources.LopTexts.Nazev</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "StartDate") ? "" : "display: none;")">@Web.Resources.LopTexts.StartDate</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "PlannedCloseDate") ? "" : "display: none;")">@Web.Resources.LopTexts.PlannedCloseDate</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "MaxPlannedCloseDate") ? "" : "display: none;")">@Web.Resources.LopTexts.MaxPlannedCloseDate</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "ProductPN") ? "" : "display: none;")">Produkt - PN</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "ProductPopis") ? "" : "display: none;")">Produkt - Popis</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "ProductSapNumber") ? "" : "display: none;")">Produkt - SapNumber</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "Resitel") ? "" : "display: none;")">@Web.Resources.LopTexts.Resitel</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "Investice") ? "" : "display: none;")">@Web.Resources.LopTexts.Investice</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "LessonLearned") ? "" : "display: none;")">@Web.Resources.LopTexts.LessonLearned</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "PrehledPodukolu") ? "" : "display: none;")">
+                <span class="label label-table label-success">@Web.Resources.LopTexts.HotoveSubukoly</span><br />
+                <span class="label label-table label-warning">@Web.Resources.LopTexts.SubukolyKeKontrole</span><br />
+                <span class="label label-table label-danger">@Web.Resources.LopTexts.NesplneneSubukoly</span><br />
+                <span class="label label-table label-default">@Web.Resources.LopTexts.CelkemSubukolu</span>
+            </th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "LastChangedDate") ? "" : "display: none;")">@Web.Resources.LopTexts.LastChangedDate</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var lop in (IList<Lop>)ViewBag.lopMeAsZadavatel)
+        {
+            if (!lop.IsZadavatel(uzivatel))
+            {
+                continue;
+            }
+        <!--PODBARVENÍ ŘÁDKŮ DLE HOTOVÉHO / PROŠVIHNUTÉHO / KE KONTROLE-->
+            <tr class="@(lop.FinishDate != null ? "success" : (lop.ShouldBeAlreadyDone() ? "danger" : (lop.Status == StatusUkolu.Closed ? "warning" : "")))">
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName, "Id") ? "" : "display: none;")">
+                    @lop.Id
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName, "Action") ? "" : "display: none;")">
+                    @lop.Action
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName, "Status") ? "" : "display: none;")">
+                    @lop.Status.ToString().Substring(0, 1)
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName, "Dilna") ? "" : "display: none;")">
+                    @lop.Dilna
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName, "Nazev") ? "" : "display: none;")">
+                    @lop.Nazev
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName, "StartDate") ? "" : "display: none;")">
+                    @lop.StartDate.ToShortDateString()
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName, "PlannedCloseDate") ? "" : "display: none;")">
+                    @lop.PlannedCloseDate.ToShortDateString()
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName, "MaxPlannedCloseDate") ? "" : "display: none;")">
+                    @lop.MaxPlannedCloseDate.ToShortDateString()
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName, "ProductPN") ? "" : "display: none;")">
+                    @if (lop.Materialy.Count > 0)
+                {
+                    string s = "";
+                    for (int i = 0; i < lop.Materialy.Count; i++)
+                    {
+                        if (i == lop.Materialy.Count - 1)
+                        {
+                            s += (string.IsNullOrEmpty(lop.Materialy[i].Produkt.Pn) ? "" : lop.Materialy[i].Produkt.Pn);
+                        }
+                        else
+                        {
+                            s += Html.Raw(string.IsNullOrEmpty(lop.Materialy[i].Produkt.Pn) ? "" : lop.Materialy[i].Produkt.Pn + ", ");
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(s))
+                    {
+                            <a data-toggle="tooltip" data-placement="right" title="@Html.Raw(s)">@lop.Materialy[0].Produkt.Pn, ...</a>
+                        }
+
+                    }
+
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName, "ProductPopis") ? "" : "display: none;")">
+
+                    @if (lop.Materialy.Count > 0)
+                {
+                    string s = "";
+                    for (int i = 0; i < lop.Materialy.Count; i++)
+                    {
+                        if (i == lop.Materialy.Count - 1)
+                        {
+                            s += lop.Materialy[i].Produkt.Popis;
+                        }
+                        else
+                        {
+                            s += Html.Raw(lop.Materialy[i].Produkt.Popis + ", ");
+                        }
+                    }
+                    <a data-toggle="tooltip" data-placement="right" title="@Html.Raw(s)">@lop.Materialy[0].Produkt.Popis, ...</a>
+                    }
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName, "ProductSapNumber") ? "" : "display: none;")">
+                    @if (lop.Materialy.Count > 0)
+                {
+                    string s = "";
+                    for (int i = 0; i < lop.Materialy.Count; i++)
+                    {
+                        if (i == lop.Materialy.Count - 1)
+                        {
+                            s += lop.Materialy[i].Produkt.SapCislo;
+                        }
+                        else
+                        {
+                            s += Html.Raw(lop.Materialy[i].Produkt.SapCislo + ", ");
+                        }
+                    }
+                    <a data-toggle="tooltip" data-placement="right" title="@Html.Raw(s)">@lop.Materialy[0].Produkt.SapCislo, ...</a>
+                    }
+
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName, "Resitel") ? "" : "display: none;")">
+                    @Html.Raw(lop.Resitel.ToTextBtn())
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName, "Investice") ? "" : "display: none;")">
+                    @(lop.Investice ? "A" : "N")
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName, "LessonLearned") ? "" : "display: none;")">
+                    @(lop.LessonLearned ? "A" : "N")
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName, "PrehledPodukolu") ? "" : "display: none;")">
+                    <span class="label label-success">@lop.PocetSubUkoluCompleted()</span>
+                    /
+                    <span class="label label-warning">@lop.PocetSubUkoluKeKontrole()</span>
+                    /
+                    <span class="label label-danger">@lop.PocetSubUkoluDeadlined()</span>
+                    /
+                    <span class="label label-default">@lop.PocetSubUkoluCelkem()</span>
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName, "LastChangedDate") ? "" : "display: none;")">
+                    @lop.LastChangedDate
+                </td>
+
+                <td>
+                    @if (ViewBag.ZeSmazanych == true)
+                {
+                        <a href="@Url.Action("Detail", "Lop", new {id = lop.Id, smazane = true})" class="btn btn-default">@Web.Resources.LopTexts.LopDetail</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Detail", "Lop", new {id = lop.Id})" class="btn btn-default">@Web.Resources.LopTexts.LopDetail</a>
+                    }
+
+                    @if (!string.IsNullOrEmpty(lop.DeniedMessage))
+                {
+                        <br />
+                        <span class="label label-danger">@Web.Resources.LopTexts.Odmitnuto</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot class="hidden">
+        <tr>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "Id") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "Action") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "Status") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "Dilna") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "Nazev") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "StartDate") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "PlannedCloseDate") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "MaxPlannedCloseDate") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "ProductPN") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "ProductPopis") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "ProductSapNumber") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "Resitel") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "Investice") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "LessonLearned") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "PrehledPodukolu") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName, "LastChangedDate") ? "" : "display: none;")text-align:center;"></th>
+            <th></th>
+        </tr>
+    </tfoot>
+</table>
+<!--Druhá tabulka-->
+<hr />
+<h2>Mnou řešené</h2>
+<table class="table table-condensed table-striped" id="zaznamy2">
+    <thead>
+        <tr>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Id") ? "" : "display: none;")">Id</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Action") ? "" : "display: none;")">@Web.Resources.LopTexts.Action</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Status") ? "" : "display: none;")">@Web.Resources.LopTexts.Status</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Dilna") ? "" : "display: none;")">@Web.Resources.LopTexts.Dilna</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Nazev") ? "" : "display: none;")">@Web.Resources.LopTexts.Nazev</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "StartDate") ? "" : "display: none;")">@Web.Resources.LopTexts.StartDate</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "PlannedCloseDate") ? "" : "display: none;")">@Web.Resources.LopTexts.PlannedCloseDate</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "MaxPlannedCloseDate") ? "" : "display: none;")">@Web.Resources.LopTexts.MaxPlannedCloseDate</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "ProductPN") ? "" : "display: none;")">Produkt - PN</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "ProductPopis") ? "" : "display: none;")">Produkt - Popis</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "ProductSapNumber") ? "" : "display: none;")">Produkt - SapNumber</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Resitel") ? "" : "display: none;")">@Web.Resources.LopTexts.Resitel</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Investice") ? "" : "display: none;")">@Web.Resources.LopTexts.Investice</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "LessonLearned") ? "" : "display: none;")">@Web.Resources.LopTexts.LessonLearned</th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "PrehledPodukolu") ? "" : "display: none;")">
+                <span class="label label-table label-success">@Web.Resources.LopTexts.HotoveSubukoly</span><br />
+                <span class="label label-table label-warning">@Web.Resources.LopTexts.SubukolyKeKontrole</span><br />
+                <span class="label label-table label-danger">@Web.Resources.LopTexts.NesplneneSubukoly</span><br />
+                <span class="label label-table label-default">@Web.Resources.LopTexts.CelkemSubukolu</span>
+            </th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "LastChangedDate") ? "" : "display: none;")">@Web.Resources.LopTexts.LastChangedDate</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var lop in (IList<Lop>)ViewBag.lopMeAsResitel)
+        {
+            if (!lop.IsResitel(uzivatel))
+            {
+                continue;
+            }
+        <!--PODBARVENÍ ŘÁDKŮ DLE HOTOVÉHO / PROŠVIHNUTÉHO / KE KONTROLE-->
+            <tr class="@(lop.FinishDate != null ? "success" : (lop.ShouldBeAlreadyDone() ? "danger" : (lop.Status == StatusUkolu.Closed ? "warning" : "")))">
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Id") ? "" : "display: none;")">
+                    @lop.Id
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Action") ? "" : "display: none;")">
+                    @lop.Action
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Status") ? "" : "display: none;")">
+                    @lop.Status.ToString().Substring(0, 1)
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Dilna") ? "" : "display: none;")">
+                    @lop.Dilna
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Nazev") ? "" : "display: none;")">
+                    @lop.Nazev
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName2, "StartDate") ? "" : "display: none;")">
+                    @lop.StartDate.ToShortDateString()
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName2, "PlannedCloseDate") ? "" : "display: none;")">
+                    @lop.PlannedCloseDate.ToShortDateString()
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName2, "MaxPlannedCloseDate") ? "" : "display: none;")">
+                    @lop.MaxPlannedCloseDate.ToShortDateString()
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName2, "ProductPN") ? "" : "display: none;")">
+                    @if (lop.Materialy.Count > 0)
+                {
+                    string s = "";
+                    for (int i = 0; i < lop.Materialy.Count; i++)
+                    {
+                        if (i == lop.Materialy.Count - 1)
+                        {
+                            s += (string.IsNullOrEmpty(lop.Materialy[i].Produkt.Pn) ? "" : lop.Materialy[i].Produkt.Pn);
+                        }
+                        else
+                        {
+                            s += Html.Raw(string.IsNullOrEmpty(lop.Materialy[i].Produkt.Pn) ? "" : lop.Materialy[i].Produkt.Pn + ", ");
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(s))
+                    {
+                            <a data-toggle="tooltip" data-placement="right" title="@Html.Raw(s)">@lop.Materialy[0].Produkt.Pn, ...</a>
+                        }
+
+                    }
+
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName2, "ProductPopis") ? "" : "display: none;")">
+
+                    @if (lop.Materialy.Count > 0)
+                {
+                    string s = "";
+                    for (int i = 0; i < lop.Materialy.Count; i++)
+                    {
+                        if (i == lop.Materialy.Count - 1)
+                        {
+                            s += lop.Materialy[i].Produkt.Popis;
+                        }
+                        else
+                        {
+                            s += Html.Raw(lop.Materialy[i].Produkt.Popis + ", ");
+                        }
+                    }
+                    <a data-toggle="tooltip" data-placement="right" title="@Html.Raw(s)">@lop.Materialy[0].Produkt.Popis, ...</a>
+                    }
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName2, "ProductSapNumber") ? "" : "display: none;")">
+                    @if (lop.Materialy.Count > 0)
+                {
+                    string s = "";
+                    for (int i = 0; i < lop.Materialy.Count; i++)
+                    {
+                        if (i == lop.Materialy.Count - 1)
+                        {
+                            s += lop.Materialy[i].Produkt.SapCislo;
+                        }
+                        else
+                        {
+                            s += Html.Raw(lop.Materialy[i].Produkt.SapCislo + ", ");
+                        }
+                    }
+                    <a data-toggle="tooltip" data-placement="right" title="@Html.Raw(s)">@lop.Materialy[0].Produkt.SapCislo, ...</a>
+                    }
+
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Resitel") ? "" : "display: none;")">
+                    @Html.Raw(lop.Resitel.ToTextBtn())
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Investice") ? "" : "display: none;")">
+                    @(lop.Investice ? "A" : "N")
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName2, "LessonLearned") ? "" : "display: none;")">
+                    @(lop.LessonLearned ? "A" : "N")
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName2, "PrehledPodukolu") ? "" : "display: none;")">
+                    <span class="label label-success">@lop.PocetSubUkoluCompleted()</span>
+                    /
+                    <span class="label label-warning">@lop.PocetSubUkoluKeKontrole()</span>
+                    /
+                    <span class="label label-danger">@lop.PocetSubUkoluDeadlined()</span>
+                    /
+                    <span class="label label-default">@lop.PocetSubUkoluCelkem()</span>
+                </td>
+                <td style="@(uzivatel.ShowCollumn(listUkoluTableName2, "LastChangedDate") ? "" : "display: none;")">
+                    @lop.LastChangedDate
+                </td>
+
+                <td>
+                    @if (ViewBag.ZeSmazanych == true)
+                {
+                        <a href="@Url.Action("Detail", "Lop", new {id = lop.Id, smazane = true})" class="btn btn-default">@Web.Resources.LopTexts.LopDetail</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Detail", "Lop", new {id = lop.Id})" class="btn btn-default">@Web.Resources.LopTexts.LopDetail</a>
+                    }
+
+                    @if (!string.IsNullOrEmpty(lop.DeniedMessage))
+                {
+                        <br />
+                        <span class="label label-danger">@Web.Resources.LopTexts.Odmitnuto</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot class="hidden">
+        <tr>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Id") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Action") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Status") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Dilna") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Nazev") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "StartDate") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "PlannedCloseDate") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "MaxPlannedCloseDate") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "ProductPN") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "ProductPopis") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "ProductSapNumber") ? "" : "display: none;")text-align:center;"></th>
+            <th class="align-center" style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Resitel") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "Investice") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "LessonLearned") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "PrehledPodukolu") ? "" : "display: none;")text-align:center;"></th>
+            <th style="@(uzivatel.ShowCollumn(listUkoluTableName2, "LastChangedDate") ? "" : "display: none;")text-align:center;"></th>
+            <th></th>
+        </tr>
+    </tfoot>
+</table>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModalCustomTableSetting2">
+    @Web.Resources.HomeTexts.CustomSetting
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModalCustomTableSetting2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel2">Vlastní nastavení zobrazení</h4>
+            </div>
+            <div class="modal-body">
+                <div style="width: 50%" class="pull-left">
+                    @using (Html.BeginForm("CustomTableSetting", "Uzivatel", FormMethod.Post))
+                    {
+                        <h4>Mnou zadané</h4>
+                        @Html.Hidden("tableName", listUkoluTableName)
+                        @Html.Hidden("controller", "Home")
+                        @Html.Hidden("view", "Index")
+
+                        <div class="form-group">
+                            <input type="checkbox" id="show_id" name="Id" value="true" @(uzivatel.ShowCollumn(listUkoluTableName, "Id") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_id">Id</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_Action" name="Action" value="true" @(uzivatel.ShowCollumn(listUkoluTableName, "Action") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_Action">@Web.Resources.LopTexts.Action</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_Status" name="Status" value="true" @(uzivatel.ShowCollumn(listUkoluTableName, "Status") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_Status">@Web.Resources.LopTexts.Status</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_Dilna" name="Dilna" value="true" @(uzivatel.ShowCollumn(listUkoluTableName, "Dilna") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_Dilna">@Web.Resources.LopTexts.Dilna</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_Nazev" name="Nazev" value="true" @(uzivatel.ShowCollumn(listUkoluTableName, "Nazev") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_Nazev">@Web.Resources.LopTexts.Nazev</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_StartDate" name="StartDate" value="true" @(uzivatel.ShowCollumn(listUkoluTableName, "StartDate") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_StartDate">@Web.Resources.LopTexts.StartDate</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_PlannedCloseDate" name="PlannedCloseDate" value="true" @(uzivatel.ShowCollumn(listUkoluTableName, "PlannedCloseDate") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_PlannedCloseDate">@Web.Resources.LopTexts.PlannedCloseDate</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_MaxPlannedCloseDate" name="MaxPlannedCloseDate" value="true" @(uzivatel.ShowCollumn(listUkoluTableName, "MaxPlannedCloseDate") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_MaxPlannedCloseDate">@Web.Resources.LopTexts.MaxPlannedCloseDate</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_ProductPN" name="ProductPN" value="true" @(uzivatel.ShowCollumn(listUkoluTableName, "ProductPN") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_ProductPN">PN</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_ProductPopis" name="ProductPopis" value="true" @(uzivatel.ShowCollumn(listUkoluTableName, "ProductPopis") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_ProductPopis">@Web.Resources.LopTexts.Popis</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_ProductSapNumber" name="ProductSapNumber" value="true" @(uzivatel.ShowCollumn(listUkoluTableName, "ProductSapNumber") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_ProductSapNumber">@Web.Resources.LopTexts.MaterialSapCislo</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_Resitel" name="Resitel" value="true" @(uzivatel.ShowCollumn(listUkoluTableName, "Resitel") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_Resitel">@Web.Resources.LopTexts.Resitel</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_Investice" name="Investice" value="true" @(uzivatel.ShowCollumn(listUkoluTableName, "Investice") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_Investice">@Web.Resources.LopTexts.Investice</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_LessonLearned" name="LessonLearned" value="true" @(uzivatel.ShowCollumn(listUkoluTableName, "LessonLearned") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_LessonLearned">@Web.Resources.LopTexts.LessonLearned</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_PrehledPodukolu" name="PrehledPodukolu" value="true" @(uzivatel.ShowCollumn(listUkoluTableName, "PrehledPodukolu") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_PrehledPodukolu">@Web.Resources.LopTexts.PrehledPodukolu</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_LastChangedDate" name="LastChangedDate" value="true" @(uzivatel.ShowCollumn(listUkoluTableName, "LastChangedDate") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_LastChangedDate">@Web.Resources.LopTexts.LastChangedDate</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-load" id="btn_confirm" data-loading-text="Ukládám...">
+                            @Web.Resources.LopTexts.Potvrdit
+                        </button>
+                    }
+                </div>
+                <div style="width: 50%" class="pull-left">
+                    @using (Html.BeginForm("CustomTableSetting", "Uzivatel", FormMethod.Post))
+                    {
+                        <h4>Mnou řešené</h4>
+                        @Html.Hidden("tableName", listUkoluTableName2)
+                        @Html.Hidden("controller", "Home")
+                        @Html.Hidden("view", "Index")
+
+                        <div class="form-group">
+                            <input type="checkbox" id="show_id2" name="Id" value="true" @(uzivatel.ShowCollumn(listUkoluTableName2, "Id") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_id2">Id</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_Action" name="Action" value="true" @(uzivatel.ShowCollumn(listUkoluTableName2, "Action") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_Action">@Web.Resources.LopTexts.Action</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_Status2" name="Status" value="true" @(uzivatel.ShowCollumn(listUkoluTableName2, "Status") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_Status2">@Web.Resources.LopTexts.Status</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_Dilna2" name="Dilna" value="true" @(uzivatel.ShowCollumn(listUkoluTableName2, "Dilna") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_Dilna2">@Web.Resources.LopTexts.Dilna</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_Nazev2" name="Nazev" value="true" @(uzivatel.ShowCollumn(listUkoluTableName2, "Nazev") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_Nazev2">@Web.Resources.LopTexts.Nazev</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_StartDate2" name="StartDate" value="true" @(uzivatel.ShowCollumn(listUkoluTableName2, "StartDate") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_StartDate2">@Web.Resources.LopTexts.StartDate</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_PlannedCloseDate2" name="PlannedCloseDate" value="true" @(uzivatel.ShowCollumn(listUkoluTableName2, "PlannedCloseDate") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_PlannedCloseDate2">@Web.Resources.LopTexts.PlannedCloseDate</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_MaxPlannedCloseDate2" name="MaxPlannedCloseDate" value="true" @(uzivatel.ShowCollumn(listUkoluTableName2, "MaxPlannedCloseDate") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_MaxPlannedCloseDate2">@Web.Resources.LopTexts.MaxPlannedCloseDate</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_ProductPN2" name="ProductPN" value="true" @(uzivatel.ShowCollumn(listUkoluTableName2, "ProductPN") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_ProductPN2">PN</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_ProductPopis2" name="ProductPopis" value="true" @(uzivatel.ShowCollumn(listUkoluTableName2, "ProductPopis") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_ProductPopis2">@Web.Resources.LopTexts.Popis</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_ProductSapNumber2" name="ProductSapNumber" value="true" @(uzivatel.ShowCollumn(listUkoluTableName2, "ProductSapNumber") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_ProductSapNumber2">@Web.Resources.LopTexts.MaterialSapCislo</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_Resitel2" name="Resitel" value="true" @(uzivatel.ShowCollumn(listUkoluTableName2, "Resitel") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_Resitel2">@Web.Resources.LopTexts.Resitel</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_Investice2" name="Investice" value="true" @(uzivatel.ShowCollumn(listUkoluTableName2, "Investice") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_Investice2">@Web.Resources.LopTexts.Investice</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_LessonLearned2" name="LessonLearned" value="true" @(uzivatel.ShowCollumn(listUkoluTableName2, "LessonLearned") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_LessonLearned2">@Web.Resources.LopTexts.LessonLearned</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_PrehledPodukolu2" name="PrehledPodukolu" value="true" @(uzivatel.ShowCollumn(listUkoluTableName2, "PrehledPodukolu") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_PrehledPodukolu2">@Web.Resources.LopTexts.PrehledPodukolu</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" id="show_LastChangedDate2" name="LastChangedDate" value="true" @(uzivatel.ShowCollumn(listUkoluTableName2, "LastChangedDate") ? "checked=\"checked\"" : "")/>
+                            <label class="control-label" for="show_LastChangedDate2">@Web.Resources.LopTexts.LastChangedDate</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-load" id="btn_confirm" data-loading-text="Ukládám...">
+                            @Web.Resources.LopTexts.Potvrdit
+                        </button>
+                    }
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Web.Resources.HomeTexts.Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Header{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/content/datatable.min.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/content/bootstrap-datepicker.min.css")" />
+}
+@section Script{
+    <script type="text/javascript" src="@Url.Content("~/scripts/datatables.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/scripts/datatables.date-de.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // sizes - číslo šířka input text v px
+            //         null - selectlist
+            //         0 - vypnutý filtr
+            var sizes = [40, 40, null, null, 100, 80, 80, 80, 100, 140, 100, 90, null, null, 0, 80, 0];
+            var i = -1;
+            $('#zaznamy tfoot th').each(function () {
+                i++;
+                if (sizes[i] == null || sizes[i] === 0)
+                    return;
+
+                $(this).html('<input type="text" style="width:' + sizes[i] + 'px" />');
+            });
+
+            var table = $('#zaznamy').DataTable({
+                columnDefs: [
+                    { type: 'de_date', targets: 4 },
+                    { type: 'de_date', targets: 5 },
+                    { type: 'de_datetime', targets: 13 },
+                    { targets: -3, orderable: false },
+                    { targets: -1, orderable: false }
+                ],
+                "pageLength": 5,
+                "lengthMenu": [5, 7, 10, 15, 25, 50, 75, 100],
+                "order": [[1, "desc"]],
+                "language": {
+                    "decimal": "",
+                    "emptyTable": "@Web.Resources.DatatableTexts.emptyTable",
+                    "info": "@Web.Resources.DatatableTexts.info",
+                    "infoEmpty": "@Web.Resources.DatatableTexts.infoEmpty",
+                    "infoFiltered": "@Web.Resources.DatatableTexts.infoFiltered",
+                    "infoPostFix": "",
+                    "thousands": "@Web.Resources.DatatableTexts.thousands",
+                    "lengthMenu": "@Web.Resources.DatatableTexts.lengthMenu",
+                    "loadingRecords": "@Web.Resources.DatatableTexts.loadingRecords",
+                    "processing": "@Web.Resources.DatatableTexts.processing",
+                    "search": "@Web.Resources.DatatableTexts.search",
+                    "zeroRecords": "@Web.Resources.DatatableTexts.zeroRecords",
+                    "paginate": {
+                        "first": "@Web.Resources.DatatableTexts.paginate_first",
+                        "last": "@Web.Resources.DatatableTexts.paginate_last",
+                        "next": "@Web.Resources.DatatableTexts.paginate_next",
+                        "previous": "@Web.Resources.DatatableTexts.paginate_previous"
+                    },
+                    "aria": {
+                        "sortAscending": ": activate to sort column ascending",
+                        "sortDescending": ": activate to sort column descending"
+                    }
+                },
+                initComplete: function () {
+                    var i = -1;
+                    this.api().columns().every(function () {
+                        i++;
+                        if (sizes[i] != null || sizes[i] === 0)
+                            return;
+                        var column = this;
+                        var select = $('<select><option value=""></option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                column.search(val ? '^' + val + '$' : '', true, false).draw();
+                            });
+
+                        column.data().unique().sort().each(function (d) {
+                            select.append('<option value="' + d + '">' + d + '</option>');
+                        });
+                    });
+                }
+            });
+            table.columns().every(function () {
+                var that = this;
+                $('input', this.footer()).on('keyup change', function () {
+                    if (that.search() !== this.value) {
+                        that.search(this.value).draw();
+                    }
+                });
+            });
+
+            // Tabulka 2
+            sizes = [40, 40, null, null, 100, 80, 80, 80, 100, 140, 100, 90, null, null, 0, 80, 0];
+            i = -1;
+            $('#zaznamy2 tfoot th').each(function () {
+                i++;
+                if (sizes[i] == null || sizes[i] === 0)
+                    return;
+
+                $(this).html('<input type="text" style="width:' + sizes[i] + 'px" />');
+            });
+
+            var table2 = $('#zaznamy2').DataTable({
+                columnDefs: [
+                    { type: 'de_date', targets: 4 },
+                    { type: 'de_date', targets: 5 },
+                    { type: 'de_datetime', targets: 13 },
+                    { targets: -3, orderable: false },
+                    { targets: -1, orderable: false }
+                ],
+                "pageLength": 5,
+                "lengthMenu": [5, 7, 10, 15, 25, 50, 75, 100],
+                "order": [[1, "desc"]],
+                "language": {
+                    "decimal": "",
+                    "emptyTable": "@Web.Resources.DatatableTexts.emptyTable",
+                    "info": "@Web.Resources.DatatableTexts.info",
+                    "infoEmpty": "@Web.Resources.DatatableTexts.infoEmpty",
+                    "infoFiltered": "@Web.Resources.DatatableTexts.infoFiltered",
+                    "infoPostFix": "",
+                    "thousands": "@Web.Resources.DatatableTexts.thousands",
+                    "lengthMenu": "@Web.Resources.DatatableTexts.lengthMenu",
+                    "loadingRecords": "@Web.Resources.DatatableTexts.loadingRecords",
+                    "processing": "@Web.Resources.DatatableTexts.processing",
+                    "search": "@Web.Resources.DatatableTexts.search",
+                    "zeroRecords": "@Web.Resources.DatatableTexts.zeroRecords",
+                    "paginate": {
+                        "first": "@Web.Resources.DatatableTexts.paginate_first",
+                        "last": "@Web.Resources.DatatableTexts.paginate_last",
+                        "next": "@Web.Resources.DatatableTexts.paginate_next",
+                        "previous": "@Web.Resources.DatatableTexts.paginate_previous"
+                    },
+                    "aria": {
+                        "sortAscending": ": activate to sort column ascending",
+                        "sortDescending": ": activate to sort column descending"
+                    }
+                },
+                initComplete: function () {
+                    var i = -1;
+                    this.api().columns().every(function () {
+                        i++;
+                        if (sizes[i] != null || sizes[i] === 0)
+                            return;
+                        var column = this;
+                        var select = $('<select><option value=""></option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                column.search(val ? '^' + val + '$' : '', true, false).draw();
+                            });
+
+                        column.data().unique().sort().each(function (d) {
+                            select.append('<option value="' + d + '">' + d + '</option>');
+                        });
+                    });
+                }
+            });
+            table2.columns().every(function () {
+                var that = this;
+                $('input', this.footer()).on('keyup change', function () {
+                    if (that.search() !== this.value) {
+                        that.search(this.value).draw();
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+

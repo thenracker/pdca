@@ -1,0 +1,309 @@
+﻿@using DataAccess.Models.DataUnit
+@model UkolOddeleni
+
+@{
+    ViewBag.Title = "UkolOddeleni";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h1>@Web.Resources.LopTexts.UkolOddeleniDetail</h1>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <a class="btn btn-primary" href="@Url.Action("Index")">@Web.Resources.LopTexts.ZpetNaVypis</a>
+        @if (Model.Status == StatusUkolu.Open && Model.Zadavatel.Match(User.Identity.Name))
+        {
+            <a class="btn btn-default" href="@Url.Action("Edit",new {id=Model.Id})">@Web.Resources.LopTexts.Upravit</a>
+            <a class="btn btn-danger" onclick="return confirm('Opravdu odstranit úkol @Model.Nazev?')" href="@Url.Action("Delete", new {id = Model.Id})">@Web.Resources.LopTexts.Delete</a>
+        }
+        @if (Model.Status == StatusUkolu.Open && Model.Resitel.Match(User.Identity.Name))
+        {
+            <button disabled="disabled" type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalReseni">
+                @Web.Resources.LopTexts.OznacitVyreseny
+            </button>
+        }
+        @if (Model.Status == StatusUkolu.Closed && Model.Zadavatel.Match(User.Identity.Name))
+        {
+            <button disabled="disabled" type="button" class="btn btn-@(Model.DateFinish==null?"success":"warning")" data-toggle="modal" data-target="#myModalReseni">
+                @if (Model.DateFinish == null)
+                {@Web.Resources.LopTexts.ZkontrolovatReseni}
+                else
+                {@Web.Resources.LopTexts.OznacitNevyreseny }
+            </button>
+        }
+    </div>
+    <div class="panel-body">
+        <p>
+            @Web.Resources.LopTexts.Action: @Model.Action <br />
+
+            @Web.Resources.LopTexts.Status: @Model.Status
+        </p>
+        <h2>
+            @Model.Nazev
+        </h2>
+
+        <div class="form-group">
+            @Html.Raw(Model.Popis)
+        </div>
+
+
+        <div class="form-group">
+            <label> @Web.Resources.LopTexts.Zadavatel</label>
+            <div>@Model.Zadavatel.ToString() </div>
+        </div>
+
+        <div class="form-group">
+            <label> @Web.Resources.LopTexts.Resitel</label>
+            <div>@Model.Resitel.ToString()</div>
+        </div>
+
+        @if (Model.Materialy.Count > 0)
+        {
+            <div class="form-group">
+                <label> @Web.Resources.LopTexts.Produkt</label>
+                <div>
+                    <table class="table table-condensed table-produkt">
+                        <thead>
+                            <tr>
+                                <th>@Web.Resources.LopTexts.Material</th>
+                                <th>@Web.Resources.LopTexts.MaterialDruh</th>
+                                <th>@Web.Resources.LopTexts.MaterialSapCislo</th>
+                                <th>@Web.Resources.LopTexts.MaterialSapPopis</th>
+                                <th>@Web.Resources.LopTexts.Popis</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var m in Model.Materialy)
+                            {
+                                <tr>
+                                    <td>@m.Produkt</td>
+                                    <td>@m.Produkt.Druh</td>
+                                    <td>@m.Produkt.SapCislo</td>
+                                    <td>@m.Produkt.PopisSap</td>
+                                    <td>@m.Produkt.Popis</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        }
+        else
+        {
+            <div class="form-group">
+                <label> @Web.Resources.LopTexts.Produkt</label>
+                <div>
+                    @Web.Resources.LopTexts.NebylPridanProdukt
+                </div>
+            </div>
+
+        }
+
+
+        <div class="form-group">
+            <label> @Web.Resources.LopTexts.StartDate</label>
+            <div>
+                @(((DateTime)Model.DateStart).ToShortDateString())
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label> @Web.Resources.LopTexts.PlannedCloseDate</label>
+            <div>
+                @(((DateTime) Model.DatePlannedClose).ToShortDateString())
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label> @Web.Resources.LopTexts.CloseDate</label> <!--deadline - přepsat v resource na datum ukonč TODO-->
+            <div>
+                @if (Model.DateDeadline != null)
+            {
+                    @(((DateTime)Model.DateDeadline).ToShortDateString())
+                }
+            </div>
+        </div>
+        <div class="form-group">
+            <label> @Web.Resources.LopTexts.CheckDate</label>
+            <div>
+                @if (Model.DateCheck != null)
+                {
+                    @(((DateTime)Model.DateCheck).ToShortDateString())
+                }
+            </div>
+        </div>
+        <div class="form-group">
+            <label> @Web.Resources.LopTexts.FinishDate</label>
+            <div>
+                @if (Model.DateFinish != null)
+            {
+                    @(((DateTime)Model.DateFinish).ToShortDateString())
+                }
+            </div>
+        </div>
+        <div class="form-group">
+            <label> @Web.Resources.LopTexts.Poznamka</label>
+            <div>@Model.Poznamka</div>
+        </div>
+        <div class="form-group">
+            <label> @Web.Resources.LopTexts.LessonLearned</label>
+            <div>@Html.DisplayFor(x => x.LessonLearned)</div>
+        </div>
+
+        <div class="form-group">
+            <label> @Web.Resources.LopTexts.LastChangedDate</label>
+            <div>
+                @(((DateTime)Model.DateLastChanged).ToString())
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="panel panel-default">
+
+    <script type="text/javascript">
+                function switchHistory() {
+
+                    if (document.getElementById("history").style.display === "none") {
+                        document.getElementById("history").style.display = "block";
+                    } else {
+                        document.getElementById("history").style.display = "none";
+                    }
+
+                }
+    </script>
+
+    <div id="historyBtn" class="panel-heading" onclick='switchHistory();'><a class="btn btn-warning">@Web.Resources.LopTexts.History</a></div>
+
+    <div id="history" style="display: @(ViewBag.ShowHistory==true?"block":"none");">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>@Web.Resources.LopTexts.CheckDate</th>
+                <th>@Web.Resources.LopTexts.Zmenil</th>
+                <th>@Web.Resources.LopTexts.ZmenenePolozky</th>
+                <th>@Web.Resources.LopTexts.ProvedeneZmeny</th>
+                <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.History.Count; i++)
+            {
+                IList<String> zmeny = Model.UpraveneHodnotyVHistorii(i);
+
+                for (int j = 0; j < zmeny.Count - 1; j += 2)
+                {
+
+                        <tr class="@(j == 0 ? "active" : "")">
+                            <td>
+                                @if (j == 0)
+                                {
+                                    @Model.History[i].DateStart.ToShortDateString()
+                                }
+                            </td>
+                            <td>
+                                @if (j == 0)
+                                {
+                                    @Model.History[i].Zadavatel.Jmeno
+                                    @Model.History[i].Zadavatel.Prijmeni
+                                }
+                            </td>
+                            <td>@zmeny[j]</td>
+                            <td>@Html.Raw(zmeny[j + 1])</td> <!-- RAWka je pojistka kvůli popisu -->
+                            <td>
+                                @if (j == 0)
+                                {
+                                    <button disabled="disabled" type="button" class="btn btn-default" data-toggle="modal" data-target="#myModalHistoryDetail" onclick=" showHistoryDetail(@Model.History[i].Id) ">
+                                        @Web.Resources.LopTexts.Detail
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<!-- Modal submit disable/enabled script -->
+<script type="text/javascript">
+    function stoppedTyping() {
+        if (document.getElementById('komentarInput').value.length > 0) {
+            document.getElementById('btn_confirm2').className = 'btn btn-success btn-load btn-danger';
+            document.getElementById('btn_confirm2').setAttribute('type', 'submit');
+        } else {
+            document.getElementById('btn_confirm2').className = 'btn btn-success btn-load disabled';
+            document.getElementById('btn_confirm2').setAttribute('type', 'button');
+        }
+    }
+</script>
+<!-- Modal Historie detail -->
+<div class="modal fade" id="myModalHistoryDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
+</div>
+<script type="text/javascript">
+    function showHistoryDetail(id) {
+        $(document).ready(function () {
+            $.get('/UkolOddeleni/DetailHistory/' + id, function (data) {
+                $('#myModalHistoryDetail').html(data);
+            })
+        })
+    }
+</script>
+<!-- Modal -->
+<div class="modal fade" id="myModalReseni" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Řešení úkolu oddělení</h4>
+            </div>
+            @using (Html.BeginForm("FinishUkol", "UkolOddeleni", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    @Html.Hidden("id", Model.Id)
+                    @Html.Hidden("finished", true, new { id = "modalFinished" })
+                    @if (Model.Komentar != null || !Model.Komentar.IsEmpty())
+                    {
+                        <p>@Html.Raw(Model.Komentar)</p>
+                    }
+                    <div class="form-group">
+                        <div class="">
+                            @Html.TextArea("komentar", "", new { @class = "form-control", onkeyup = "stoppedTyping()", id = "komentarInput", placeholder = "Napište komentář k řešení" })
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        @if (Model.Status == StatusUkolu.Open && User.Identity.Name.ToUpper().Equals(Model.Resitel.WindowsId.ToUpper()))
+                        {
+                            <button disabled="disabled" type="submit" class="btn btn-success btn-load" id="btn_confirm" data-loading-text="Ukládám...">
+                                @Web.Resources.LopTexts.OznacitVyreseny
+                            </button>
+                        }
+                        @if (Model.Status == StatusUkolu.Closed && User.Identity.Name.ToUpper().Equals(Model.Zadavatel.WindowsId.ToUpper()))
+                        {
+                            if (Model.DateFinish == null)
+                            {
+                                <button onmouseover="document.getElementById('modalFinished').value='true';" disabled="disabled" type="submit" class="btn btn-success btn-load" id="btn_confirm" data-loading-text="Ukládám...">
+                                    @Web.Resources.LopTexts.OznacitVyreseny
+                                </button>
+                            }
+
+                            <button onmouseover="document.getElementById('modalFinished').value='false';" disabled="disabled" type="button" class="btn btn-danger btn-load disabled" id="btn_confirm2" data-loading-text="Ukládám...">
+                                @Web.Resources.LopTexts.OznacitNevyreseny
+                            </button>
+                        }
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@Web.Resources.LopTexts.Zavrit</button>
+                    </div>
+                </div>
+            }
+
+        </div>
+
+    </div>
+</div>

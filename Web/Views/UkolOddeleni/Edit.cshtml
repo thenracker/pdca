@@ -1,0 +1,349 @@
+﻿@using DataAccess.Models.DataUnit
+@using DataAccess.Models.DataUnit.Users
+@model UkolOddeleni
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<div class="form-container">
+    <h2>@Web.Resources.LopTexts.UpravitUkol (oddělení)</h2>
+    @using (Html.BeginForm("Edit", "UkolOddeleni", FormMethod.Post))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.Action)
+        @Html.HiddenFor(x => x.DateStart)
+        @Html.HiddenFor(x => x.DateLastChanged)
+        @Html.HiddenFor(x => x.Zadavatel.SmartId)
+
+        if (Model.Zadavatel != null)
+        {
+            <div class="form-group">
+                <label class="control-label">@Web.Resources.LopTexts.Zadavatel</label>
+                <div class="">
+                    <p>@Model.Zadavatel.ToString()</p>
+                </div>
+            </div>
+        }
+        <div class="form-group">
+            <label class="control-label">@Web.Resources.LopTexts.Nazev</label>
+            <div class="">
+                @Html.TextBoxFor(x => x.Nazev, new {@class = "form-control", placeholder = "Název"})
+                @Html.ValidationMessageFor(x => x.Nazev, null, new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">@Web.Resources.LopTexts.Resitel</label>
+            <div class="">
+                @Html.DropDownListFor(x => x.Resitel.SmartId, new SelectList(Uzivatel.GetSelectListUzivatele(), "Value", "Text"), new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">@Web.Resources.LopTexts.PlannedCloseDate</label>
+            <div class="">
+                @Html.TextBoxFor(x => x.DatePlannedClose, new { @class = "form-control jscalendar", Value = ((DateTime)Model.DatePlannedClose).ToShortDateString() })
+                @Html.ValidationMessageFor(x => x.DatePlannedClose, null, new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">@Web.Resources.LopTexts.Popis</label>
+            <div class="">
+                @Html.TextAreaFor(x => x.Popis, new { @class = "form-control formatedtext", placeholder = "Popis" })
+                @Html.ValidationMessageFor(x => x.Popis, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">@Web.Resources.LopTexts.Poznamka</label>
+            <div class="">
+                @Html.TextBoxFor(x => x.Poznamka, new { @class = "form-control", placeholder = "Poznámka" })
+                @Html.ValidationMessageFor(x => x.Poznamka, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">@Web.Resources.LopTexts.LessonLearned</label>
+            @Html.CheckBoxFor(x => x.LessonLearned)
+            @Html.ValidationMessageFor(x => x.LessonLearned, null, new { @class = "text-danger" })
+        </div>
+
+        <!--Výběr produktů -->
+        <hr />
+        <button disabled="disabled" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModalMaterials">
+            @Web.Resources.LopTexts.VybratProdukty
+        </button>
+        <h3>@Web.Resources.LopTexts.ProduktyVazane</h3>
+        @Html.Hidden("produktyInput", Model.MaterialyInput, new { id = "produkty_input" })
+        <table class="table table-striped" id="products">
+            <thead>
+                <tr>
+                    <td>Druh</td>
+                    <td>PN</td>
+                    <td>Popis</td>
+                    <td>Sap číslo</td>
+                    <td>Sap popis</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Materialy != null)
+                {
+                    foreach (var item in Model.Materialy)
+                    {
+                        <tr id="row-@item.Produkt.Id">
+                            <td>@item.Produkt.Druh</td>
+                            <td>@item.Produkt.Pn</td>
+                            <td>@item.Produkt.Popis</td>
+                            <td>@item.Produkt.SapCislo</td>
+                            <td>@item.Produkt.PopisSap</td>
+                            <td>
+                                <button disabled="disabled" role="button" class="btn btn-danger btn-sm todisable" onclick="removeProduct('@item.Produkt.Id');">Odebrat</button>
+                            </td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+
+        </table>
+        <!--End výbr produktů-->
+
+            <div class="form-group">
+                <div class="">
+                    <button type="submit" id="btn_show_materials" class="btn btn-primary btn-load" id="btn_confirm" data-loading-text="Ukládám...">
+                        @Web.Resources.LopTexts.Potvrdit <!-- TODO přesměrovat v controlleru do detailu -->
+                    </button>
+
+                    <a href="@Url.Action("Detail/"+Model.Id)" class="btn btn-default">@Web.Resources.LopTexts.Zrusit</a>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                @if (Model.Resitel.WindowsId == User.Identity.Name.ToUpper())
+                {
+                    /*POSÍLÁNÍ EMAILU - PODLE TOHO KDO DO ÚKOLU PŘISTUPUJE*/
+                    <div class="">
+                        @Html.CheckBox("poslatMailResiteli")
+                        <label class="control-label">Poslat upozornění řešiteli</label>
+                    </div>
+                    <div class="">
+                        @Html.CheckBox("poslatMailZadavateli", new { @checked = "" })
+                        <label class="control-label">Poslat upozornění zadavateli</label>
+                    </div>
+                }
+                else
+                {
+                    <div class="">
+                        @Html.CheckBox("poslatMailResiteli", new { @checked = "" })
+                        <label class="control-label">Poslat upozornění řešiteli</label>
+                    </div>
+                    <div class="">
+                        @Html.CheckBox("poslatMailZadavateli")
+                        <label class="control-label">Poslat upozornění zadavateli</label>
+                    </div>
+                }
+
+            </div>
+
+    }
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModalMaterials" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Materiály</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-condensed" id="zaznamy">
+                        <thead>
+                            <tr>
+                                <th>Druh</th>
+                                <th>PN</th>
+                                <th>Popis</th>
+                                <th>Sap číslo</th>
+                                <th>Sap popis</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*@foreach (var item in (IList<Material>)ViewBag.materialList)
+                            {
+                                <tr>
+                                    <td>@item.Druh</td>
+                                    <td>@item.Pn</td>
+                                    <td>@item.Popis</td>
+                                    <td>@item.SapCislo</td>
+                                    <td>@item.PopisSap</td>
+                                    <td>
+                                        <button disabled="disabled" class="btn btn-default btn-sm" style="@(Model.MaterialyInput.Contains(";"+item.Id+";")?"display:none":"")" id="btn-add-@item.Id" onclick="fillProduct('@item.Id', '@item.Druh', '@item.Pn', '@item.Popis', '@item.SapCislo', '@item.PopisSap')">Vybrat</button>
+                                        <button disabled="disabled" class="btn btn-danger btn-sm" style="@(Model.MaterialyInput.Contains(";"+item.Id+";")?"":"display:none")" id="btn-remove-@item.Id" onclick="removeProduct('@item.Id')">Odebrat</button>
+                                    </td>
+                                </tr>
+                            }*@
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Header{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/content/datatable.min.css")" />
+
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/content/bootstrap-datepicker.min.css")" />
+}
+@section Script{
+    <script type="text/javascript" src="@Url.Content("~/scripts/tinymce/tinymce.min.js")"></script>
+    <script type="text/javascript">tinymce.init({ selector: '.formatedtext' });</script>
+    <script type="text/javascript" src="@Url.Content("~/scripts/datatables.min.js")"></script>
+
+    <script type="text/javascript" src="@Url.Content("~/scripts/bootstrap-datepicker.js")"></script>
+    @if (Web.Resources.HomeTexts.lang == "cs")
+    {
+        <script type="text/javascript" src="@Url.Content("~/scripts/locales/bootstrap-datepicker.cs.min.js")"></script>
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.jscalendar').datepicker({
+                todayBtn: "linked",
+                orientation: "bottom auto",
+                language: "@Web.Resources.HomeTexts.lang",
+                calendarWeeks: true,
+                todayHighlight: true,
+                startDate: "0d"
+            });
+            loadMaterialy();
+        });
+        fillProduct = function (id, druh, pn, popis, sapcislo, sappopis) {
+            $("#btn-add-" + id).hide();
+            $("#btn-remove-" + id).show();
+
+            var produktyText = $("#produkty_input").val();
+            $("#produkty_input").val(produktyText + ';' + id + ';');
+
+            $("#products").find('tbody')
+                .append($('<tr>')
+                    .attr('id', 'row-' + id)
+                    .append($('<td>')
+                        .text(druh)
+                    )
+                    .append($('<td>')
+                        .text(pn)
+                    )
+                    .append($('<td>')
+                        .text(popis)
+                    )
+                    .append($('<td>')
+                        .text(sapcislo)
+                    )
+                    .append($('<td>')
+                        .text(sappopis)
+                    )
+                    .append($('<td>')
+                        .append($('<button>')
+                            .attr('class', 'btn btn-danger btn-sm')
+                            .attr('onclick', 'removeProduct(\'' + id + '\')')
+                            .text('Odebrat')
+                        )
+                    )
+                );
+        }
+        removeProduct = function (id) {
+            var produktyText = $("#produkty_input").val();
+            $("#produkty_input").val(produktyText.replace(';' + id + ';', ""));
+            $("#row-" + id).remove();
+            $("#btn-add-" + id).show();
+            $("#btn-remove-" + id).hide();
+        }
+        loadMaterialy = function () {
+            $('#btn_show_materials').attr('disabled', 'disabled');
+            $('.todisable').attr('disabled', 'disabled');
+
+            $.getJSON('/api/ApiMaterial?json=true').done(function (data) {
+                $.each(data, function (key, val) {
+                    $("#zaznamy").find('tbody')
+                        .append($('<tr>')
+                            .append($('<td>')
+                                .text(val['Druh'])
+                            )
+                            .append($('<td>')
+                                .text(val['Pn'])
+                            )
+                            .append($('<td>')
+                                .text(val['Popis'])
+                            )
+                            .append($('<td>')
+                                .text(val['SapCislo'])
+                            )
+                            .append($('<td>')
+                                .text(val['SapPopis'])
+                            )
+                            .append($('<td>')
+                                .append($('<button>')
+                                    .attr('class', 'btn btn-default btn-sm')
+                                    .attr('id', 'btn-add-' + val['Id'])
+                                    .attr('onclick', 'fillProduct(\'' + val['Id'] + '\', \'' + val['Druh'] + '\', \'' + val['Pn'] + '\', \'' + val['Popis'] + '\', \'' + val['SapCislo'] + '\', \'' + val['SapPopis'] + '\')')
+                                    .text('Vybrat')
+                                )
+                                .append($('<button>')
+                                    .attr('class', 'btn btn-danger btn-sm')
+                                    .attr('style', 'display: none;')
+                                    .attr('id', 'btn-remove-' + val['Id'])
+                                    .attr('onclick', 'removeProduct(\'' + val['Id'] + '\')')
+                                    .text('Odebrat')
+                                )
+                            )
+                        );
+                });
+                var materialyInput = '@Model.MaterialyInput';
+                var arr = materialyInput.split(';');
+                $.each(arr, function (index, value) {
+                    if (value === '')
+                        return;
+                    $('#btn-add-' + value).attr('style', 'display:none');
+                    $('#btn-remove-' + value).attr('style', '');
+                });
+
+                $('#zaznamy').DataTable({
+                    "pageLength": 15,
+                    "lengthMenu": [10, 15, 25, 50, 75, 100],
+                    "order": [[1, "asc"]],
+                    "language": {
+                        "decimal": "",
+                        "emptyTable": "@Web.Resources.DatatableTexts.emptyTable",
+                        "info": "@Web.Resources.DatatableTexts.info",
+                        "infoEmpty": "@Web.Resources.DatatableTexts.infoEmpty",
+                        "infoFiltered": "@Web.Resources.DatatableTexts.infoFiltered",
+                        "infoPostFix": "",
+                        "thousands": "@Web.Resources.DatatableTexts.thousands",
+                        "lengthMenu": "@Web.Resources.DatatableTexts.lengthMenu",
+                        "loadingRecords": "@Web.Resources.DatatableTexts.loadingRecords",
+                        "processing": "@Web.Resources.DatatableTexts.processing",
+                        "search": "@Web.Resources.DatatableTexts.search",
+                        "zeroRecords": "@Web.Resources.DatatableTexts.zeroRecords",
+                        "paginate": {
+                            "first": "@Web.Resources.DatatableTexts.paginate_first",
+                            "last": "@Web.Resources.DatatableTexts.paginate_last",
+                            "next": "@Web.Resources.DatatableTexts.paginate_next",
+                            "previous": "@Web.Resources.DatatableTexts.paginate_previous"
+                        },
+                        "aria": {
+                            "sortAscending": ": activate to sort column ascending",
+                            "sortDescending": ": activate to sort column descending"
+                        }
+                    }
+                });
+                $("#btn_show_materials").removeAttr("disabled");
+                $('.todisable').removeAttr("disabled");
+            });
+        }
+    </script>
+}
